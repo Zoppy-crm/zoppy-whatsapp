@@ -1,0 +1,167 @@
+import { UnprocessableEntityException } from '@nestjs/common';
+import { ApiErrorMessages, MessageTemplateUtil, StringUtil, WhatsappConstants } from '@ZoppyTech/utilities';
+import axios from 'axios';
+import { WhatsappRoutes } from '../util/whatsapp-routes';
+import { BusinessMessageTemplatesResponse } from '../response/business-message-templates.response';
+import { WhatsappUtilities } from '../util/whatsapp-utilities';
+
+export class WhatsappMessageTemplateService {
+    public static async findByName(wabaId: string, token: string, templateName: string): Promise<BusinessMessageTemplatesResponse> {
+        try {
+            const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
+            const response: any = await axios.get(`${url}?name=${templateName}`, WhatsappUtilities.makeAuthorization(token));
+            return response.data;
+        } catch (error: any) {
+            console.log(error.body);
+            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+        }
+    }
+
+    public static async findById(wabaId: string, token: string, wppId: string): Promise<BusinessMessageTemplatesResponse> {
+        try {
+            const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
+            const response: any = await axios.get(`${url}/${wppId}`, WhatsappUtilities.makeAuthorization(token));
+            return response.data;
+        } catch (error: any) {
+            console.log(error.body);
+            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+        }
+    }
+
+    public static async list(wabaId: string, token: string): Promise<BusinessMessageTemplatesResponse[]> {
+        try {
+            const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
+            const response: any = await axios.get(url, WhatsappUtilities.makeAuthorization(token));
+            return response.data;
+        } catch (error: any) {
+            console.log(error.body);
+            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+        }
+    }
+
+    public static async create(
+        wabaId: string,
+        token: string,
+        params: UpsertTemplateMessageParameters
+    ): Promise<BusinessMessageTemplatesResponse> {
+        try {
+            const body: BusinessMessageTemplatesResponse = this.makeWppTemplateBody(params);
+            const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
+            console.log({
+                method: 'create',
+                body: JSON.stringify(body),
+                url: url,
+                token: token
+            });
+            const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
+            return response.data;
+        } catch (error: any) {
+            console.log(error.body);
+            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+        }
+    }
+
+    public static async update(
+        wabaId: string,
+        token: string,
+        wppId: string,
+        params: UpsertTemplateMessageParameters
+    ): Promise<BusinessMessageTemplatesResponse> {
+        try {
+            const body: BusinessMessageTemplatesResponse = this.makeWppTemplateBody(params);
+            const url: string = `${WhatsappRoutes.getMessageTemplatesUrl(wabaId)}/${wppId}`;
+            console.log({
+                method: 'update',
+                body: JSON.stringify(body),
+                url: url,
+                token: token
+            });
+            const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
+            return response.data;
+        } catch (error: any) {
+            console.log(error.body);
+            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+        }
+    }
+
+    public static async delete(wabaId: string, token: string, wppId: string): Promise<BusinessMessageTemplatesResponse> {
+        try {
+            const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
+            console.log({
+                method: 'delete',
+                url: url,
+                token: token
+            });
+            const response: any = await axios.delete(`${url}/${wppId}`, WhatsappUtilities.makeAuthorization(token));
+            return response.data;
+        } catch (error: any) {
+            console.log(error.body);
+            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+        }
+    }
+
+    private static makeWppTemplateBody(params: UpsertTemplateMessageParameters): BusinessMessageTemplatesResponse {
+        const body: BusinessMessageTemplatesResponse = {
+            category: 'MARKETING',
+            language: WhatsappConstants.LANGUAGE_CODES.PT_BR,
+            name: StringUtil.makeId(32, true),
+            components: [
+                {
+                    type: 'BODY',
+                    text: MessageTemplateUtil.replaceTemplateParameters(params.text),
+                    example: {
+                        body_text: [
+                            MessageTemplateUtil.extractTemplateParameters(params.text).map((param: string) =>
+                                MessageTemplateUtil.findParameterExampleTextForWhatsapp(param)
+                            )
+                        ]
+                    }
+                }
+            ]
+        };
+
+        if (params.ctaLabel) {
+            body.components.push({
+                type: 'BUTTONS',
+                buttons: [
+                    {
+                        type: 'URL',
+                        text: params.ctaLabel,
+                        url: params.ctaLink
+                    }
+                ]
+            });
+        }
+
+        if (params.footerMessage) {
+            body.components.push({
+                type: 'FOOTER',
+                text: params.footerMessage
+            });
+        }
+
+        if (params.headerMessage) {
+            body.components.push({
+                type: 'HEADER',
+                text: MessageTemplateUtil.replaceTemplateParameters(params.headerMessage),
+                format: 'TEXT',
+                example: {
+                    header_text: MessageTemplateUtil.extractTemplateParameters(params.headerMessage).map((param: string) =>
+                        MessageTemplateUtil.findParameterExampleTextForWhatsapp(param)
+                    )
+                }
+            });
+        }
+
+        return body;
+    }
+}
+
+export interface UpsertTemplateMessageParameters {
+    wppId?: string;
+    footerMessage?: string;
+    headerMessage?: string;
+    text?: string;
+    ctaLabel?: string;
+    ctaLink?: string;
+}
