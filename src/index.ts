@@ -26,3 +26,14 @@ export {
     MessageTemplatesComponentResponseButton,
     MessageTemplatesComponentResponseExample
 } from './response/business-message-templates.response';
+
+export {
+    WhatsappMessageService,
+    SendTemplateMessageParameters,
+    SendTemplateMessageBody,
+    SendTemplateMessageComponentParameterBody,
+    SendTemplateMessageComponentBody,
+    SendTemplateMessageResponse,
+    SendTemplateMessageContactResponse,
+    SendTemplateMessageMsgResponse
+} from './service/whatsapp-message.service';
