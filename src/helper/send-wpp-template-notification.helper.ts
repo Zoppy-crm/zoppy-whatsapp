@@ -23,7 +23,7 @@ import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
 
-export class WhatsappNotificationHelper {
+export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {
         const address: Address = await Address.findOne({
             where: {

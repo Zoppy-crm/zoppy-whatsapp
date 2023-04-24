@@ -37,3 +37,6 @@ export {
     SendTemplateMessageContactResponse,
     SendTemplateMessageMsgResponse
 } from './service/whatsapp-message.service';
+
+export { SendWppTemplateNotificationHelper } from './helper/send-wpp-template-notification.helper';
+export { TemplateFetchEntitiesHelper, Parameters, TemplateFetchEntitiesHelperResponse } from './helper/template-fetch-entities.helper';

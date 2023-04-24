@@ -16,7 +16,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TestUtils } from '@ZoppyTech/test-utils';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { AppConstants, MessageTemplateConstants, MessageTemplateUtil, StringUtil, WhatsappConstants } from '@ZoppyTech/utilities';
-import { WhatsappNotificationHelper } from './whatsapp-notification.helper';
+import { SendWppTemplateNotificationHelper } from './send-wpp-template-notification.helper';
 
 describe(`Whatsapp Notification Helper`, () => {
     let app: INestApplication;
@@ -181,7 +181,7 @@ Um abraço!`;
             updatedAt: new Date(),
             companyId: company.id
         });
-        const response: WppMessage = await WhatsappNotificationHelper.send({
+        const response: WppMessage = await SendWppTemplateNotificationHelper.send({
             phone: '31998085147',
             identifier: messageTemplateGroup.identifier,
             company: company,
