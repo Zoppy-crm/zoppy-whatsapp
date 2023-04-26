@@ -27,7 +27,7 @@ export class WhatsappMessageService {
                 }
             };
 
-            if (params.textParams) {
+            if (params.textParams && params.textParams.length) {
                 body.template.components.push({
                     type: 'body',
                     parameters: params.textParams.map((param: string) => {
@@ -39,7 +39,7 @@ export class WhatsappMessageService {
                 });
             }
 
-            if (params.headerParams) {
+            if (params.headerParams && params.headerParams.length) {
                 body.template.components.push({
                     type: 'header',
                     parameters: params.headerParams.map((param: string) => {
@@ -51,9 +51,11 @@ export class WhatsappMessageService {
                 });
             }
 
-            console.log('url', url);
-            console.log('body', body);
-            console.log('token', WhatsappUtilities.makeAuthorization(token));
+            console.log({
+                url: url,
+                body: body,
+                auth: WhatsappUtilities.makeAuthorization(token)
+            });
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
