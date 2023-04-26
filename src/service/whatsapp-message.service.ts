@@ -33,7 +33,7 @@ export class WhatsappMessageService {
                     parameters: params.textParams.map((param: string) => {
                         return {
                             type: 'text',
-                            text: param
+                            text: param ? param : ' '
                         };
                     })
                 });
@@ -45,7 +45,7 @@ export class WhatsappMessageService {
                     parameters: params.headerParams.map((param: string) => {
                         return {
                             type: 'text',
-                            text: param
+                            text: param ? param : ' '
                         };
                     })
                 });
