@@ -86,7 +86,7 @@ export class WhatsappMessageTemplateService {
 
     public static async delete(wabaId: string, token: string, wppName: string): Promise<BusinessMessageTemplatesResponse> {
         try {
-            const url: string = `${WhatsappRoutes.getMessageTemplatesUrl(wabaId)}/${wppName}`;
+            const url: string = `${WhatsappRoutes.getMessageTemplatesUrl(wabaId)}?name=${wppName}`;
             console.log({
                 method: 'delete',
                 url: url,
