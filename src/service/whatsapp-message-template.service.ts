@@ -56,7 +56,7 @@ export class WhatsappMessageTemplateService {
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
-            console.log(error.body);
+            console.log(error);
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
         }
     }
@@ -89,13 +89,13 @@ export class WhatsappMessageTemplateService {
             const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
             console.log({
                 method: 'delete',
-                url: url,
+                url: `${url}/${wppId}`,
                 token: token
             });
             const response: any = await axios.delete(`${url}/${wppId}`, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
-            console.log(error.body);
+            console.log(error);
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
         }
     }
