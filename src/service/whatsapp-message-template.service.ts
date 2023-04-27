@@ -2,7 +2,7 @@ import { UnprocessableEntityException } from '@nestjs/common';
 import { ApiErrorMessages, MessageTemplateUtil, StringUtil, WhatsappConstants } from '@ZoppyTech/utilities';
 import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
-import { BusinessMessageTemplatesResponse } from '../response/business-message-templates.response';
+import { BusinessMessageTemplatesResponse, MessageTemplatesComponentResponse } from '../response/business-message-templates.response';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
 
 export class WhatsappMessageTemplateService {
@@ -108,17 +108,20 @@ export class WhatsappMessageTemplateService {
             components: [
                 {
                     type: 'BODY',
-                    text: MessageTemplateUtil.replaceTemplateParameters(params.text),
-                    example: {
-                        body_text: [
-                            MessageTemplateUtil.extractTemplateParameters(params.text).map((param: string) =>
-                                MessageTemplateUtil.findParameterExampleTextForWhatsapp(param)
-                            )
-                        ]
-                    }
+                    text: MessageTemplateUtil.replaceTemplateParameters(params.text)
                 }
             ]
         };
+
+        const bodyParams: string[] = MessageTemplateUtil.extractTemplateParameters(params.text).map((param: string) =>
+            MessageTemplateUtil.findParameterExampleTextForWhatsapp(param)
+        );
+
+        if (bodyParams?.length > 0) {
+            body.components[0].example = {
+                body_text: [bodyParams]
+            };
+        }
 
         if (params.ctaLabel) {
             body.components.push({
@@ -141,16 +144,23 @@ export class WhatsappMessageTemplateService {
         }
 
         if (params.headerMessage) {
-            body.components.push({
+            const headerComponent: MessageTemplatesComponentResponse = {
                 type: 'HEADER',
                 text: MessageTemplateUtil.replaceTemplateParameters(params.headerMessage),
-                format: 'TEXT',
-                example: {
-                    header_text: MessageTemplateUtil.extractTemplateParameters(params.headerMessage).map((param: string) =>
-                        MessageTemplateUtil.findParameterExampleTextForWhatsapp(param)
-                    )
-                }
-            });
+                format: 'TEXT'
+            };
+
+            const headerParams: string[] = MessageTemplateUtil.extractTemplateParameters(params.headerMessage).map((param: string) =>
+                MessageTemplateUtil.findParameterExampleTextForWhatsapp(param)
+            );
+
+            if (headerParams?.length > 0) {
+                headerComponent.example = {
+                    header_text: headerParams
+                };
+            }
+
+            body.components.push(headerComponent);
         }
 
         return body;
