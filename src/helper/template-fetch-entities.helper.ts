@@ -51,7 +51,9 @@ export class TemplateFetchEntitiesHelper {
             }
         }
 
-        const seller: User = order.userId
+        const seller: User = params.userId
+            ? await User.findByPk(params.userId)
+            : order?.userId
             ? await User.findByPk(order.userId)
             : customer.userId
             ? await User.findByPk(customer.userId)
@@ -93,6 +95,7 @@ export interface Parameters {
     orderId?: string;
     companyId: string;
     code?: string;
+    userId?: string;
 }
 
 export interface TemplateFetchEntitiesHelperResponse {
