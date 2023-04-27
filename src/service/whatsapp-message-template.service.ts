@@ -84,15 +84,15 @@ export class WhatsappMessageTemplateService {
         }
     }
 
-    public static async delete(wabaId: string, token: string, wppId: string): Promise<BusinessMessageTemplatesResponse> {
+    public static async delete(wabaId: string, token: string, wppName: string): Promise<BusinessMessageTemplatesResponse> {
         try {
-            const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
+            const url: string = `${WhatsappRoutes.getMessageTemplatesUrl(wabaId)}/${wppName}`;
             console.log({
                 method: 'delete',
-                url: `${url}/${wppId}`,
+                url: url,
                 token: token
             });
-            const response: any = await axios.delete(`${url}/${wppId}`, WhatsappUtilities.makeAuthorization(token));
+            const response: any = await axios.delete(url, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
             console.log(error);
