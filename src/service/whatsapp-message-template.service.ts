@@ -104,7 +104,7 @@ export class WhatsappMessageTemplateService {
         const body: BusinessMessageTemplatesResponse = {
             category: 'MARKETING',
             language: WhatsappConstants.LANGUAGE_CODES.PT_BR,
-            name: StringUtil.makeId(32, true),
+            name: params.name,
             components: [
                 {
                     type: 'BODY',
@@ -168,6 +168,7 @@ export class WhatsappMessageTemplateService {
 }
 
 export interface UpsertTemplateMessageParameters {
+    name: string;
     wppId?: string;
     footerMessage?: string;
     headerMessage?: string;
