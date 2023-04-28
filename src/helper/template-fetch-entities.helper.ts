@@ -30,7 +30,7 @@ export class TemplateFetchEntitiesHelper {
             : await Order.findOne({
                   where: {
                       status: WcStatusConstants.COMPLETED,
-                      addressId: address.id
+                      billingId: address.id
                   }
               });
 
