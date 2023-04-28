@@ -6,13 +6,15 @@ export class TemplateFetchEntitiesHelper {
         const response: TemplateFetchEntitiesHelperResponse = {};
 
         const company: Company = await Company.findByPk(params.companyId);
-        const address: Address = await Address.findByPk(params.addressId);
-        const customer: Customer = await Customer.findOne({
-            where: {
-                companyId: params.companyId,
-                billingId: address.id
-            }
-        });
+        const address: Address = params.address ?? (await Address.findByPk(params.addressId));
+        const customer: Customer =
+            params.customer ??
+            (await Customer.findOne({
+                where: {
+                    companyId: params.companyId,
+                    billingId: address.id
+                }
+            }));
 
         const nps: Nps = params.npsId
             ? await Nps.findByPk(params.npsId)
@@ -96,6 +98,8 @@ export interface Parameters {
     companyId: string;
     code?: string;
     userId?: string;
+    address?: Address;
+    customer?: Customer;
 }
 
 export interface TemplateFetchEntitiesHelperResponse {
