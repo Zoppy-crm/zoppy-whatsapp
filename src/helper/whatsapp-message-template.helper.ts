@@ -145,6 +145,7 @@ export class WhatsappMessageTemplateHelper {
             );
         } catch (ex) {
             await LogService.error({
+                company: params.company,
                 message: {
                     message: 'Error when deleting template',
                     err: ex
