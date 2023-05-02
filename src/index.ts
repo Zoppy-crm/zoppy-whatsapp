@@ -17,7 +17,7 @@ export { WhatsappBusinessAccountExternalResponse } from './response/whatsapp-bus
 export { WhatsappBusinessDownloadMediaResponse } from './response/whatsapp-business-download-media.response';
 export { WhatsappBusinessMediaResponse } from './response/whatsapp-business-media.response';
 export { WhatsappBusinessPhoneNumberExternalResponse } from './response/whatsapp-business-phone-number-external.response';
-export { WhatsappMessageTemplateService } from './service/whatsapp-message-template.service';
+export { WhatsappMessageTemplateService, UpsertTemplateMessageParameters } from './service/whatsapp-message-template.service';
 export { WhatsappRoutes } from './util/whatsapp-routes';
 export { WhatsappUtilities } from './util/whatsapp-utilities';
 export {
