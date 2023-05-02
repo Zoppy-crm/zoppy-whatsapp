@@ -40,3 +40,4 @@ export {
 
 export { SendWppTemplateNotificationHelper } from './helper/send-wpp-template-notification.helper';
 export { TemplateFetchEntitiesHelper, Parameters, TemplateFetchEntitiesHelperResponse } from './helper/template-fetch-entities.helper';
+export { WhatsappMessageTemplateHelper } from './helper/whatsapp-message-template.helper';
