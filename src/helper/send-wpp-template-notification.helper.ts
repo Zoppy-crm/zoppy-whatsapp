@@ -117,10 +117,6 @@ export class SendWppTemplateNotificationHelper {
             MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
 
-        console.log('bodyParamValues', bodyParamValues);
-        console.log('headerParamValues', headerParamValues);
-        console.log('wppName', wppMessageTemplate.wppName);
-
         const whatsappMessageSent: TextMessageResponse = await WhatsappMessageService.sendTemplateMessage(
             whatsappPhoneNumber.phoneNumberId,
             contactPhoneSliced.getFullPhone(),
