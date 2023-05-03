@@ -7,7 +7,6 @@ import {
     WppAccount,
     WppAccountPhoneNumber,
     WppContact,
-    WppConversation,
     WppMessage
 } from '@ZoppyTech/models';
 import {
@@ -104,28 +103,6 @@ export class SendWppTemplateNotificationHelper {
 
         if (whatsappContact.isBlocked) return;
 
-        const latestConversation: WppConversation = await WppConversation.findOne({
-            where: {
-                wppContactId: whatsappContact.id,
-                companyId: params.company.id
-            },
-            order: [['createdAt', 'DESC']]
-        });
-        if (!latestConversation || !!latestConversation.finishedAt) {
-            const newConversation: WppConversation = WppConversation.build({
-                id: StringUtil.generateUuid(),
-                ticket: StringUtil.generateUuid(),
-                sessionExpiration: latestConversation?.sessionExpiration ?? null,
-                wppContactId: whatsappContact.id,
-                wppManagerId: null,
-                companyId: params.company.id,
-                finishedAt: null,
-                createdAt: new Date(),
-                updatedAt: new Date()
-            });
-            await WppConversation.create(newConversation.get());
-        }
-
         const parameterEntities: TemplateFetchEntitiesHelperResponse = await TemplateFetchEntitiesHelper.execute({
             addressId: address.id,
             orderId: params.orderId,
@@ -139,10 +116,6 @@ export class SendWppTemplateNotificationHelper {
         const bodyParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(messageTemplate.text).map((param: string) =>
             MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
-
-        console.log('bodyParamValues', bodyParamValues);
-        console.log('headerParamValues', headerParamValues);
-        console.log('wppName', wppMessageTemplate.wppName);
 
         const whatsappMessageSent: TextMessageResponse = await WhatsappMessageService.sendTemplateMessage(
             whatsappPhoneNumber.phoneNumberId,
