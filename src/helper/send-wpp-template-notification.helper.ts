@@ -7,7 +7,6 @@ import {
     WppAccount,
     WppAccountPhoneNumber,
     WppContact,
-    WppConversation,
     WppMessage
 } from '@ZoppyTech/models';
 import {
@@ -103,28 +102,6 @@ export class SendWppTemplateNotificationHelper {
         }
 
         if (whatsappContact.isBlocked) return;
-
-        const latestConversation: WppConversation = await WppConversation.findOne({
-            where: {
-                wppContactId: whatsappContact.id,
-                companyId: params.company.id
-            },
-            order: [['createdAt', 'DESC']]
-        });
-        if (!latestConversation || !!latestConversation.finishedAt) {
-            const newConversation: WppConversation = WppConversation.build({
-                id: StringUtil.generateUuid(),
-                ticket: StringUtil.generateUuid(),
-                sessionExpiration: latestConversation?.sessionExpiration ?? null,
-                wppContactId: whatsappContact.id,
-                wppManagerId: null,
-                companyId: params.company.id,
-                finishedAt: null,
-                createdAt: new Date(),
-                updatedAt: new Date()
-            });
-            await WppConversation.create(newConversation.get());
-        }
 
         const parameterEntities: TemplateFetchEntitiesHelperResponse = await TemplateFetchEntitiesHelper.execute({
             addressId: address.id,
