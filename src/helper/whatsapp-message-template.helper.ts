@@ -326,7 +326,7 @@ export class WhatsappMessageTemplateHelper {
 
         const whatsappMessageSent: TextMessageResponse = await WhatsappMessageService.sendTemplateMessage(
             accountCredentials.phoneNumberId,
-            WhatsappUtil.getPhoneWithoutCountryCode(address.phone),
+            WhatsappUtil.getFullPhone(address.phone),
             accountCredentials.wppAccount.accessToken,
             {
                 wppName: wppMessageTemplate.wppName,
