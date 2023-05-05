@@ -123,6 +123,7 @@ export class WhatsappMessageTemplateHelper {
             footerMessage: params.request?.footerMessage,
             ctaLabel: params.request?.ctaLabel,
             ctaLink: params.request?.ctaLink,
+            type: params.request?.type,
             status: response.status,
             visible: isVisible,
             messageTemplateGroupId: params.group.id,
@@ -184,6 +185,7 @@ export class WhatsappMessageTemplateHelper {
                 ctaLabel: params.request?.ctaLabel,
                 ctaLink: params.request?.ctaLink,
                 status: response.status,
+                type: params.request?.type,
                 visible: params.request?.visible,
                 messageTemplateGroupId: params.group.id,
                 updatedAt: new Date()
