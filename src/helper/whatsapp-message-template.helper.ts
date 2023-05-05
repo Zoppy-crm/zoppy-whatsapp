@@ -89,16 +89,17 @@ export class WhatsappMessageTemplateHelper {
 
     public static async createWppTemplate(params: UpsertTemplateParameters): Promise<BusinessMessageTemplatesResponse> {
         const wppName: string = StringUtil.makeId(32, true);
+        const whatsappMessageTemplateId: string = StringUtil.generateUuid();
 
         const body: UpsertTemplateMessageParameters = {
             name: wppName,
             footerMessage: params.request?.footerMessage,
             headerMessage: params.request?.headerMessage,
+            wppMessageTemplateId: whatsappMessageTemplateId,
             text: params.template.text,
             ctaLabel: params.request?.ctaLabel,
             ctaLink: params.request?.ctaLink,
-            type: params.request?.type,
-            wppMessageTemplateId: params.wppTemplate.id
+            type: params.request?.type
         };
 
         const response: BusinessMessageTemplatesResponse = await WhatsappMessageTemplateService.create(
@@ -115,7 +116,7 @@ export class WhatsappMessageTemplateHelper {
             : params.request?.visible;
 
         const whatsappMessageTemplate: WppMessageTemplate = WppMessageTemplate.build({
-            id: StringUtil.generateUuid(),
+            id: whatsappMessageTemplateId,
             wppId: response.id,
             wppName: wppName,
             headerParams: params.request?.headerMessage ? MessageTemplateUtil.extractTemplateParameters(params.request.headerMessage) : [],
