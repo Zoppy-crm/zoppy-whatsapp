@@ -13,6 +13,7 @@ export class MessageTemplatesComponentResponse {
     public buttons?: MessageTemplatesComponentResponseButton[];
     public format?: string;
     public example?: MessageTemplatesComponentResponseExample;
+    public parameters?: MessageTemplatesComponentParameterResponse[];
 }
 
 export class MessageTemplatesComponentResponseExample {
@@ -24,4 +25,14 @@ export class MessageTemplatesComponentResponseButton {
     public type: string;
     public text: string;
     public url: string;
+}
+
+export interface MessageTemplatesComponentParameterResponse {
+    type?: string;
+    image?: {
+        link?: string;
+    };
+    video?: {
+        link?: string;
+    };
 }

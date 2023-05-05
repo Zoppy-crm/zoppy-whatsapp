@@ -143,7 +143,9 @@ export class WhatsappMessageTemplateService {
             });
         }
 
-        if (params.headerMessage) {
+        if (!params.headerMessage) return body;
+
+        if (params.type === WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.TEXT) {
             const headerComponent: MessageTemplatesComponentResponse = {
                 type: 'HEADER',
                 text: MessageTemplateUtil.replaceTemplateParameters(params.headerMessage),
@@ -161,6 +163,32 @@ export class WhatsappMessageTemplateService {
             }
 
             body.components.push(headerComponent);
+        } else if (params.type === WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.IMAGE) {
+            const headerComponent: MessageTemplatesComponentResponse = {
+                type: 'HEADER',
+                parameters: [
+                    {
+                        type: 'image',
+                        image: {
+                            link: `${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`
+                        }
+                    }
+                ]
+            };
+            body.components.push(headerComponent);
+        } else if (params.type === WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.VIDEO) {
+            const headerComponent: MessageTemplatesComponentResponse = {
+                type: 'HEADER',
+                parameters: [
+                    {
+                        type: 'video',
+                        video: {
+                            link: `${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`
+                        }
+                    }
+                ]
+            };
+            body.components.push(headerComponent);
         }
 
         return body;
@@ -175,4 +203,6 @@ export interface UpsertTemplateMessageParameters {
     text?: string;
     ctaLabel?: string;
     ctaLink?: string;
+    type?: string;
+    wppMessageTemplateId: string;
 }
