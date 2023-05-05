@@ -3,7 +3,7 @@ import {
     Company,
     MessageTemplate,
     MessageTemplateGroup,
-    WhatsappMessageTemplate,
+    WppMessageTemplate,
     WppAccount,
     WppAccountPhoneNumber,
     WppContact,
@@ -50,7 +50,7 @@ export class SendWppTemplateNotificationHelper {
         });
         if (!messageTemplate) throw new UnprocessableEntityException('Template não encontrado');
 
-        const wppMessageTemplate: WhatsappMessageTemplate = await WhatsappMessageTemplate.findOne({
+        const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
             where: {
                 companyId: params.company.id,
                 messageTemplateGroupId: messageTemplateGroup.id

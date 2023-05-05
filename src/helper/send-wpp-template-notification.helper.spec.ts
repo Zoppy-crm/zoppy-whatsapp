@@ -5,7 +5,7 @@ import {
     WppAccountPhoneNumber,
     MessageTemplateGroup,
     MessageTemplate,
-    WhatsappMessageTemplate,
+    WppMessageTemplate,
     WppMessage,
     Order,
     Coupon,
@@ -165,7 +165,7 @@ Um abraço!`;
             updatedAt: new Date(),
             companyId: company.id
         });
-        await WhatsappMessageTemplate.create({
+        await WppMessageTemplate.create({
             id: StringUtil.generateUuid(),
             messageTemplateGroupId: messageTemplateGroup.id,
             wppId: '12345',

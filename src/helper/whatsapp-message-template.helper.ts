@@ -7,7 +7,7 @@ import {
     MessageTemplateGroup,
     Order,
     User,
-    WhatsappMessageTemplate,
+    WppMessageTemplate,
     WppAccount,
     WppAccountPhoneNumber,
     WppContact,
@@ -114,7 +114,7 @@ export class WhatsappMessageTemplateHelper {
             ? true
             : params.request?.visible;
 
-        const whatsappMessageTemplate: WhatsappMessageTemplate = WhatsappMessageTemplate.build({
+        const whatsappMessageTemplate: WppMessageTemplate = WppMessageTemplate.build({
             id: StringUtil.generateUuid(),
             wppId: response.id,
             wppName: wppName,
@@ -131,7 +131,7 @@ export class WhatsappMessageTemplateHelper {
             updatedAt: new Date()
         });
 
-        await WhatsappMessageTemplate.create({ ...whatsappMessageTemplate.get() });
+        await WppMessageTemplate.create({ ...whatsappMessageTemplate.get() });
 
         return response;
     }
@@ -161,7 +161,9 @@ export class WhatsappMessageTemplateHelper {
             headerMessage: params.request?.headerMessage,
             text: params.template.text,
             ctaLabel: params.request?.ctaLabel,
-            ctaLink: params.request?.ctaLink
+            ctaLink: params.request?.ctaLink,
+            type: params.request?.type,
+            wppMessageTemplateId: params.wppTemplate.id
         };
 
         const response: BusinessMessageTemplatesResponse = await WhatsappMessageTemplateService.create(
@@ -170,7 +172,7 @@ export class WhatsappMessageTemplateHelper {
             body
         );
 
-        await WhatsappMessageTemplate.update(
+        await WppMessageTemplate.update(
             {
                 wppId: response.id,
                 wppName: wppName,
@@ -301,7 +303,7 @@ export class WhatsappMessageTemplateHelper {
 
         if (!messageTemplateGroup) throw new NotFoundException(ApiErrorMessages.WHATSAPP_MESSAGE_TEMPLATE_NOT_FOUND_OR_DELETED);
 
-        const wppMessageTemplate: WhatsappMessageTemplate = await WhatsappMessageTemplate.findOne({
+        const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
             where: {
                 messageTemplateGroupId: messageTemplateGroup.id,
                 companyId: params.company.id
@@ -361,7 +363,7 @@ interface UpsertTemplateParameters {
     group: MessageTemplateGroup;
     template: MessageTemplate;
     wppAccount: WppAccount;
-    wppTemplate?: WhatsappMessageTemplate;
+    wppTemplate?: WppMessageTemplate;
     request?: SyncGroupWhatsappRequest;
     company: Company;
 }
