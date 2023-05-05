@@ -203,6 +203,6 @@ export interface UpsertTemplateMessageParameters {
     text?: string;
     ctaLabel?: string;
     ctaLink?: string;
-    type?: string;
+    type: string;
     wppMessageTemplateId: string;
 }
