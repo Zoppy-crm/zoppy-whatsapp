@@ -166,27 +166,19 @@ export class WhatsappMessageTemplateService {
         } else if (params.type === WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.IMAGE) {
             const headerComponent: MessageTemplatesComponentResponse = {
                 type: 'HEADER',
-                parameters: [
-                    {
-                        type: 'image',
-                        image: {
-                            link: `${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`
-                        }
-                    }
-                ]
+                format: 'IMAGE',
+                example: {
+                    header_handle: [`${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`]
+                }
             };
             body.components.push(headerComponent);
         } else if (params.type === WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.VIDEO) {
             const headerComponent: MessageTemplatesComponentResponse = {
                 type: 'HEADER',
-                parameters: [
-                    {
-                        type: 'video',
-                        video: {
-                            link: `${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`
-                        }
-                    }
-                ]
+                format: 'VIDEO',
+                example: {
+                    header_handle: [`${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`]
+                }
             };
             body.components.push(headerComponent);
         }
