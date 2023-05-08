@@ -115,7 +115,7 @@ export class WhatsappMessageTemplateHelper {
             : params.request?.visible;
 
         const whatsappMessageTemplate: WppMessageTemplate = WppMessageTemplate.build({
-            id: whatsappMessageTemplateId,
+            id: params.createWppMessageTemplateId,
             wppId: response.id,
             wppName: wppName,
             headerParams: params.request?.headerMessage ? MessageTemplateUtil.extractTemplateParameters(params.request.headerMessage) : [],
