@@ -337,7 +337,10 @@ export class WhatsappMessageTemplateHelper {
             {
                 wppName: wppMessageTemplate.wppName,
                 headerParams: headerParamValues,
-                textParams: bodyParamValues
+                textParams: bodyParamValues,
+                headerType: wppMessageTemplate.type,
+                fileUrl: `${process.env.API_URL}/api/download/wpp-message-templates/${wppMessageTemplate.id}/header`,
+                hasHeader: !!wppMessageTemplate.headerMessage
             }
         );
 
