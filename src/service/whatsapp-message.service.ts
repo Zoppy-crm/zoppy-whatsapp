@@ -1,7 +1,7 @@
 import { TextMessageResponse } from '../response/text-message.response';
 import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
-import { ApiErrorMessages, WhatsappConstants } from '@ZoppyTech/utilities';
+import { ApiErrorMessages, MessageTemplateConstants, WhatsappConstants } from '@ZoppyTech/utilities';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
 
@@ -13,6 +13,9 @@ export class WhatsappMessageService {
         params: SendTemplateMessageParameters
     ): Promise<TextMessageResponse> {
         try {
+            params.textParams = params.textParams ?? [];
+            params.headerParams = params.headerParams ?? [];
+
             const url: string = WhatsappRoutes.getMessagesUrl(from);
             const body: SendTemplateMessageBody = {
                 messaging_product: 'whatsapp',
@@ -27,39 +30,66 @@ export class WhatsappMessageService {
                 }
             };
 
-            if (params.textParams && params.textParams.length) {
-                body.template.components.push({
-                    type: 'body',
-                    parameters: params.textParams.map((param: string) => {
-                        return {
-                            type: 'text',
-                            text: param ? param : ' '
-                        };
-                    })
-                });
-            }
+            body.template.components.push({
+                type: 'body',
+                parameters: params.textParams.map((param: string) => {
+                    return {
+                        type: 'text',
+                        text: param ? param : ' '
+                    };
+                })
+            });
 
-            if (params.headerParams && params.headerParams.length) {
-                body.template.components.push({
-                    type: 'header',
-                    parameters: params.headerParams.map((param: string) => {
-                        return {
-                            type: 'text',
-                            text: param ? param : ' '
-                        };
-                    })
-                });
+            if (params.hasHeader) {
+                switch (params.headerType) {
+                    case WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.TEXT:
+                        body.template.components.push({
+                            type: 'header',
+                            parameters: params.headerParams.map((param: string) => {
+                                return {
+                                    type: 'text',
+                                    text: param ? param : ' '
+                                };
+                            })
+                        });
+                        break;
+                    case WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.VIDEO:
+                        body.template.components.push({
+                            type: 'header',
+                            parameters: [
+                                {
+                                    type: 'video',
+                                    video: {
+                                        link: params.fileUrl
+                                    }
+                                }
+                            ]
+                        });
+                        break;
+                    case WhatsappConstants.MESSAGE_TEMPLATES.HEADER_TYPES.IMAGE:
+                        body.template.components.push({
+                            type: 'header',
+                            parameters: [
+                                {
+                                    type: 'image',
+                                    image: {
+                                        link: params.fileUrl
+                                    }
+                                }
+                            ]
+                        });
+                        break;
+                }
             }
 
             console.log({
                 url: url,
-                body: body,
+                body: JSON.stringify(body),
                 auth: WhatsappUtilities.makeAuthorization(token)
             });
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
-            console.log(error);
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
         }
     }
@@ -69,6 +99,9 @@ export interface SendTemplateMessageParameters {
     wppName: string;
     headerParams?: Array<string>;
     textParams?: Array<string>;
+    headerType: string;
+    fileUrl: string;
+    hasHeader: boolean;
 }
 
 export interface SendTemplateMessageBody {
@@ -86,7 +119,13 @@ export interface SendTemplateMessageBody {
 
 export interface SendTemplateMessageComponentParameterBody {
     type: string;
-    text: string;
+    text?: string;
+    image?: {
+        link: string;
+    };
+    video?: {
+        link: string;
+    };
 }
 export interface SendTemplateMessageComponentBody {
     type: string;
