@@ -15,7 +15,7 @@ export class WhatsappMediaService {
         request: WhatsappCreateSessionRequest
     ): Promise<WhatsappCreateSessionResponse> {
         try {
-            const url: string = `${WhatsappRoutes.makeBaseUrl()}/${appId}/uploads?file_length=${request.fileSize}&file_type-${
+            const url: string = `${WhatsappRoutes.makeBaseUrl()}/${appId}/uploads?file_length=${request.fileSize}&file_type=${
                 request.mimetype
             }`;
 
