@@ -1,3 +1,8 @@
+export { WhatsappCreateSessionRequest } from './request/whatsapp-create-session.request';
+export { WhatsappCreateSessionResponse } from './response/whatsapp-create-session.response';
+export { WhatsappMediaUploadResponse } from './response/whatsapp-media-upload.response';
+export { WhatsappMediaService } from './service/whatsapp-media.service';
+
 export { WhatsappBusinessMediaRequest } from './request/whatsapp-business-media.request';
 export { DocumentMessageRequest, DocumentObject } from './response/document-message.request';
 export { ImageObject } from './response/image-message.request';
