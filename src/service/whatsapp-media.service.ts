@@ -36,7 +36,12 @@ export class WhatsappMediaService {
         }
     }
 
-    public static async uploadFile(sessionId: string, token: string, file: any, mimetype: string): Promise<WhatsappMediaUploadResponse> {
+    public static async uploadFile(
+        sessionId: string,
+        token: string,
+        file: Express.Multer.File,
+        mimetype: string
+    ): Promise<WhatsappMediaUploadResponse> {
         try {
             const headers: any = {
                 file_offset: '0',
@@ -53,7 +58,7 @@ export class WhatsappMediaService {
                 }
             });
 
-            const response: any = await axios.post(url, file, {
+            const response: any = await axios.post(url, file.buffer, {
                 headers: headers
             });
             return response.data;
