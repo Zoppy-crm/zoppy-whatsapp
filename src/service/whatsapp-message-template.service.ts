@@ -168,7 +168,7 @@ export class WhatsappMessageTemplateService {
                 type: 'HEADER',
                 format: 'IMAGE',
                 example: {
-                    header_handle: [`${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`]
+                    header_handle: [params.headerHandle]
                 }
             };
             body.components.push(headerComponent);
@@ -177,7 +177,7 @@ export class WhatsappMessageTemplateService {
                 type: 'HEADER',
                 format: 'VIDEO',
                 example: {
-                    header_handle: [`${process.env.API_URL}/api/download/wpp-message-templates/${params.wppMessageTemplateId}/header`]
+                    header_handle: [params.headerHandle]
                 }
             };
             body.components.push(headerComponent);
@@ -192,6 +192,7 @@ export interface UpsertTemplateMessageParameters {
     wppId?: string;
     footerMessage?: string;
     headerMessage?: string;
+    headerHandle: string;
     text?: string;
     ctaLabel?: string;
     ctaLink?: string;

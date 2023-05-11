@@ -98,7 +98,8 @@ export class WhatsappMessageTemplateHelper {
             text: params.template.text,
             ctaLabel: params.request?.ctaLabel,
             ctaLink: params.request?.ctaLink,
-            type: params.request?.type
+            type: params.request?.type,
+            headerHandle: params.request.headerHandle
         };
 
         const response: BusinessMessageTemplatesResponse = await WhatsappMessageTemplateService.create(
@@ -164,7 +165,8 @@ export class WhatsappMessageTemplateHelper {
             ctaLabel: params.request?.ctaLabel,
             ctaLink: params.request?.ctaLink,
             type: params.request?.type,
-            wppMessageTemplateId: params.wppTemplate.id
+            wppMessageTemplateId: params.wppTemplate.id,
+            headerHandle: params.request.headerHandle
         };
 
         const response: BusinessMessageTemplatesResponse = await WhatsappMessageTemplateService.create(
