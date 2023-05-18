@@ -30,7 +30,7 @@
         "@types/passport-local": "^1.0.34",
         "@types/sequelize": "^4.28.14",
         "@types/supertest": "^2.0.11",
-        "@ZoppyTech/test-utils": "^0.1.3",
+        "@ZoppyTech/test-utils": "^0.1.6",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
@@ -63,8 +63,8 @@
     "peerDependencies": {
         "@nestjs/common": "^9.0.5",
         "@nestjs/config": "^2.2.0",
-        "@ZoppyTech/utilities": "^1.1.6",
-        "@ZoppyTech/models": "^2.1.26",
+        "@ZoppyTech/utilities": "^1.1.23",
+        "@ZoppyTech/models": "^2.1.29",
         "axios": "*",
         "uuid": "^8.3.2"
     },
