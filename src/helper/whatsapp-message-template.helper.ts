@@ -90,6 +90,8 @@ export class WhatsappMessageTemplateHelper {
     public static async createWppTemplate(params: UpsertTemplateParameters): Promise<BusinessMessageTemplatesResponse> {
         const wppName: string = StringUtil.makeId(32, true);
 
+        if (!params.createWppMessageTemplateId) params.createWppMessageTemplateId = StringUtil.generateUuid();
+
         const body: UpsertTemplateMessageParameters = {
             name: wppName,
             footerMessage: params.request?.footerMessage,
