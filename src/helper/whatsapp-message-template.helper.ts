@@ -99,7 +99,7 @@ export class WhatsappMessageTemplateHelper {
             ctaLabel: params.request?.ctaLabel,
             ctaLink: params.request?.ctaLink,
             type: params.request?.type,
-            headerHandle: params.request.headerHandle
+            headerHandle: params.request?.headerHandle
         };
 
         const response: BusinessMessageTemplatesResponse = await WhatsappMessageTemplateService.create(
