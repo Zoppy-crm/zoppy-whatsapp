@@ -88,16 +88,15 @@ export class WhatsappMessageService {
                 body: JSON.stringify(body),
                 auth: WhatsappUtilities.makeAuthorization(token)
             });
-            await LogService.info({
-                message: {
-                    message: '[WhatsappMessageService]: Send whatsapp template message for customer',
-                    url: url,
-                    body: params.wppName
-                }
-            });
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
+            await LogService.error({
+                message: {
+                    message: '[WhatsappMessageService]: Error when trying to send template message for customer',
+                    error: error
+                }
+            });
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
         }
     }
