@@ -88,14 +88,13 @@ export class WhatsappMessageService {
                 body: JSON.stringify(body),
                 auth: WhatsappUtilities.makeAuthorization(token)
             });
-
             await LogService.info({
                 message: {
-                    message: 'Send whatsapp message for customer',
-                    url: url
+                    message: '[WhatsappMessageService]: Send whatsapp template message for customer',
+                    url: url,
+                    body: params.wppName
                 }
             });
-
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
