@@ -4,6 +4,7 @@ import { WhatsappRoutes } from '../util/whatsapp-routes';
 import { ApiErrorMessages, MessageTemplateConstants, WhatsappConstants } from '@ZoppyTech/utilities';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
+import { LogService } from './log/log.service';
 
 export class WhatsappMessageService {
     public static async sendTemplateMessage(
@@ -87,6 +88,14 @@ export class WhatsappMessageService {
                 body: JSON.stringify(body),
                 auth: WhatsappUtilities.makeAuthorization(token)
             });
+
+            await LogService.info({
+                message: {
+                    message: 'Send whatsapp message for customer',
+                    url: url
+                }
+            });
+
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
