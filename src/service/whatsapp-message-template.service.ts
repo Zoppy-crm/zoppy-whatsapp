@@ -4,6 +4,7 @@ import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
 import { BusinessMessageTemplatesResponse, MessageTemplatesComponentResponse } from '../response/business-message-templates.response';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
+import { LogService } from './log/log.service';
 
 export class WhatsappMessageTemplateService {
     public static async findByName(wabaId: string, token: string, templateName: string): Promise<BusinessMessageTemplatesResponse> {
@@ -47,16 +48,22 @@ export class WhatsappMessageTemplateService {
         try {
             const body: BusinessMessageTemplatesResponse = this.makeWppTemplateBody(params);
             const url: string = WhatsappRoutes.getMessageTemplatesUrl(wabaId);
-            console.log({
-                method: 'create',
-                body: JSON.stringify(body),
-                url: url,
-                token: token
+            await LogService.info({
+                message: {
+                    method: 'create',
+                    body: JSON.stringify(body),
+                    url: url,
+                    token: token
+                }
             });
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
-            console.log(error);
+            await LogService.error({
+                message: {
+                    message: 'Error when creating whatsapp template'
+                }
+            });
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
         }
     }
@@ -70,16 +77,22 @@ export class WhatsappMessageTemplateService {
         try {
             const body: BusinessMessageTemplatesResponse = this.makeWppTemplateBody(params);
             const url: string = `${WhatsappRoutes.getMessageTemplatesUrl(wabaId)}/${wppId}`;
-            console.log({
-                method: 'update',
-                body: JSON.stringify(body),
-                url: url,
-                token: token
+            await LogService.info({
+                message: {
+                    method: 'update',
+                    body: JSON.stringify(body),
+                    url: url,
+                    token: token
+                }
             });
             const response: any = await axios.post(url, body, WhatsappUtilities.makeAuthorization(token));
             return response.data;
         } catch (error: any) {
-            console.log(error.body);
+            await LogService.error({
+                message: {
+                    message: 'Error when updating whatsapp template'
+                }
+            });
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
         }
     }

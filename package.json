@@ -31,6 +31,7 @@
         "@types/sequelize": "^4.28.14",
         "@types/supertest": "^2.0.11",
         "@ZoppyTech/test-utils": "^0.1.6",
+        "@typescript-eslint/eslint-plugin": "^5.30.0",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
