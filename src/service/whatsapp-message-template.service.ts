@@ -61,7 +61,8 @@ export class WhatsappMessageTemplateService {
         } catch (error: any) {
             await LogService.error({
                 message: {
-                    message: 'Error when creating whatsapp template'
+                    message: 'Error when creating whatsapp template',
+                    error: error
                 }
             });
             throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
