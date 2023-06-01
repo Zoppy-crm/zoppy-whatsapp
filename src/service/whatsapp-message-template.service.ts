@@ -144,7 +144,7 @@ export class WhatsappMessageTemplateService {
                     {
                         type: 'URL',
                         text: params.ctaLabel,
-                        url: params.ctaLink
+                        url: params.ctaLink.trim()
                     }
                 ]
             });
@@ -197,7 +197,7 @@ export class WhatsappMessageTemplateService {
             body.components.push(headerComponent);
         }
 
-        return body;
+        return JSON.parse(JSON.stringify(body));
     }
 }
 
