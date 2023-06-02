@@ -64,7 +64,7 @@ export class WhatsappUtilities {
     }
 
     public static formatTemplateBody(text: string): string {
-        return StringUtil.replaceAll(StringUtil.replaceAll(text, '\\n', '\n'), '\n', '\\n');
+        return StringUtil.replaceAll(StringUtil.replaceAll(text, '\\n', '\n'), '\n', '\n ');
     }
 }
 
