@@ -198,7 +198,7 @@ export class WhatsappMessageTemplateService {
             body.components.push(headerComponent);
         }
 
-        return JSON.parse(JSON.stringify(body));
+        return body;
     }
 }
 
