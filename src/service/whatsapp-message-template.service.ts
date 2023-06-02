@@ -144,7 +144,8 @@ export class WhatsappMessageTemplateService {
                     {
                         type: 'URL',
                         text: params.ctaLabel,
-                        url: params.ctaLink.trim()
+                        url: params.ctaLink.trim(),
+                        example: [params.ctaLink.trim()]
                     }
                 ]
             });

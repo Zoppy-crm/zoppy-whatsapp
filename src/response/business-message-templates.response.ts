@@ -25,4 +25,5 @@ export class MessageTemplatesComponentResponseButton {
     public type: string;
     public text: string;
     public url: string;
+    public example: string[];
 }
