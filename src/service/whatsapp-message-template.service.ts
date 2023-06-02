@@ -115,6 +115,8 @@ export class WhatsappMessageTemplateService {
     }
 
     private static makeWppTemplateBody(params: UpsertTemplateMessageParameters): BusinessMessageTemplatesResponse {
+        const bodyContent: string = WhatsappUtilities.formatTemplateBody(MessageTemplateUtil.replaceTemplateParameters(params.text));
+
         const body: BusinessMessageTemplatesResponse = {
             category: 'MARKETING',
             language: WhatsappConstants.LANGUAGE_CODES.PT_BR,
@@ -122,7 +124,7 @@ export class WhatsappMessageTemplateService {
             components: [
                 {
                     type: 'BODY',
-                    text: MessageTemplateUtil.replaceTemplateParameters(params.text)
+                    text: bodyContent
                 }
             ]
         };

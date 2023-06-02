@@ -1,5 +1,5 @@
 import { UnprocessableEntityException } from '@nestjs/common';
-import { WhatsappConstants } from '@ZoppyTech/utilities';
+import { StringUtil, WhatsappConstants } from '@ZoppyTech/utilities';
 import { AxiosRequestConfig } from 'axios';
 
 export class WhatsappUtilities {
@@ -61,6 +61,10 @@ export class WhatsappUtilities {
             return WhatsappUtilities.makeNewSessionTimestamp();
         }
         return expiration.padEnd(13, '0');
+    }
+
+    public static formatTemplateBody(text: string): string {
+        return StringUtil.replaceAll(text, '\\n', '\\n ');
     }
 }
 
