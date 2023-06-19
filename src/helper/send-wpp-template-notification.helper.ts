@@ -32,6 +32,7 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
+        console.log('started sending template notification');
         await LogService.info({
             message: {
                 message: 'Found Address to send Wpp Template Notification',
