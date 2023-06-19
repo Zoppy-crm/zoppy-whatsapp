@@ -7,7 +7,8 @@ import {
     WppAccount,
     WppAccountPhoneNumber,
     WppContact,
-    WppMessage
+    WppMessage,
+    WppConversation
 } from '@ZoppyTech/models';
 import {
     ApiErrorMessages,
@@ -22,6 +23,7 @@ import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { LogService } from '../service/log/log.service';
+import { WhatsappUtilities } from '../util/whatsapp-utilities';
 
 export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {
@@ -139,6 +141,27 @@ export class SendWppTemplateNotificationHelper {
                 address: whatsappContact?.get()
             }
         });
+
+        let latestConversation: WppConversation = await WppConversation.findOne({
+            where: {
+                wppContactId: whatsappContact.id
+            },
+            order: [['createdAt', 'DESC']]
+        });
+        if (!latestConversation) {
+            latestConversation = await WppConversation.create(
+                WppConversation.build({
+                    id: StringUtil.generateUuid(),
+                    ticket: StringUtil.generateUuid(),
+                    sessionExpiration: WhatsappUtilities.makeNewSessionTimestamp(),
+                    wppContactId: whatsappContact.id,
+                    wppManagerId: null,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    companyId: params.company.id
+                }).get()
+            );
+        }
 
         const parameterEntities: TemplateFetchEntitiesHelperResponse = await TemplateFetchEntitiesHelper.execute({
             addressId: address.id,
