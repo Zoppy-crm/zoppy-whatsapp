@@ -144,7 +144,8 @@ export class SendWppTemplateNotificationHelper {
 
         let latestConversation: WppConversation = await WppConversation.findOne({
             where: {
-                wppContactId: whatsappContact.id
+                wppContactId: whatsappContact.id,
+                companyId: params.company.id
             },
             order: [['createdAt', 'DESC']]
         });
