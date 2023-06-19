@@ -21,6 +21,7 @@ import { NotFoundException, UnprocessableEntityException } from '@nestjs/common'
 import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
+import { LogService } from '../service/log/log.service';
 
 export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {
@@ -31,12 +32,26 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
+        await LogService.info({
+            message: {
+                message: 'Found Address to send Wpp Template Notification',
+                address: address?.get()
+            }
+        });
+
         if (!address) return;
 
         const messageTemplateGroup: MessageTemplateGroup = await MessageTemplateGroup.findOne({
             where: {
                 companyId: params.company.id,
                 identifier: params.identifier
+            }
+        });
+
+        await LogService.info({
+            message: {
+                message: 'Found Template Group',
+                address: messageTemplateGroup?.get()
             }
         });
 
@@ -50,10 +65,24 @@ export class SendWppTemplateNotificationHelper {
         });
         if (!messageTemplate) throw new UnprocessableEntityException('Template não encontrado');
 
+        await LogService.info({
+            message: {
+                message: 'Found Template',
+                address: messageTemplateGroup?.get()
+            }
+        });
+
         const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
             where: {
                 companyId: params.company.id,
                 messageTemplateGroupId: messageTemplateGroup.id
+            }
+        });
+
+        await LogService.info({
+            message: {
+                message: 'Found Wpp Template',
+                address: messageTemplateGroup?.get()
             }
         });
 
@@ -103,11 +132,25 @@ export class SendWppTemplateNotificationHelper {
 
         if (whatsappContact.isBlocked) return;
 
+        await LogService.info({
+            message: {
+                message: 'Found Wpp Contact',
+                address: whatsappContact?.get()
+            }
+        });
+
         const parameterEntities: TemplateFetchEntitiesHelperResponse = await TemplateFetchEntitiesHelper.execute({
             addressId: address.id,
             orderId: params.orderId,
             companyId: params.company.id,
             code: params.couponCode
+        });
+
+        await LogService.info({
+            message: {
+                message: 'Wpp Template Parameters',
+                address: parameterEntities
+            }
         });
 
         const headerParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(wppMessageTemplate.headerMessage).map(
@@ -149,6 +192,13 @@ export class SendWppTemplateNotificationHelper {
             wamId: whatsappMessageSent?.messages.pop().id,
             createdAt: new Date(),
             updatedAt: new Date()
+        });
+
+        await LogService.info({
+            message: {
+                message: 'New Message created',
+                address: newMessage
+            }
         });
 
         return await WppMessage.create(newMessage.get());
