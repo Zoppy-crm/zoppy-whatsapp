@@ -34,7 +34,6 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
-        console.log('started sending template notification');
         await LogService.info({
             message: {
                 message: 'Found Address to send Wpp Template Notification',
@@ -178,9 +177,6 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
-        console.log('PARAM ENTITIES', parameterEntities);
-        console.log('PARAM ENTITIES', parameterEntities);
-
         const headerParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(wppMessageTemplate.headerMessage).map(
             (param: string) => MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
@@ -188,10 +184,13 @@ export class SendWppTemplateNotificationHelper {
             MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
 
-        console.log('headerParamValues', headerParamValues);
-        console.log('bodyParamValues', bodyParamValues);
-
-        return null;
+        await LogService.info({
+            message: {
+                message: 'Parameter Values',
+                headerParamValues: headerParamValues,
+                bodyParamValues: bodyParamValues
+            }
+        });
 
         const whatsappMessageSent: TextMessageResponse = await WhatsappMessageService.sendTemplateMessage(
             whatsappPhoneNumber.phoneNumberId,
