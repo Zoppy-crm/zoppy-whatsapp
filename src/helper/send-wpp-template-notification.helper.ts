@@ -154,12 +154,18 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
+        console.log('PARAM ENTITIES', parameterEntities);
+        console.log('PARAM ENTITIES', parameterEntities);
+
         const headerParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(wppMessageTemplate.headerMessage).map(
             (param: string) => MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
         const bodyParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(messageTemplate.text).map((param: string) =>
             MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
+
+        console.log('headerParamValues', headerParamValues);
+        console.log('bodyParamValues', bodyParamValues);
 
         return null;
 
