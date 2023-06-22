@@ -27,9 +27,6 @@ import { WhatsappUtilities } from '../util/whatsapp-utilities';
 
 export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {
-        params.phone = '31998085147';
-        //TODO : remove this after testing
-
         const address: Address = await Address.findOne({
             where: {
                 companyId: params.company.id,
