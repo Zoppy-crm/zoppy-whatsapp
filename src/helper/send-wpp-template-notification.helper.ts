@@ -180,6 +180,13 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
+        await LogService.info({
+            message: {
+                message: 'Parameters',
+                params: MessageTemplateUtil.extractTemplateParameters(wppMessageTemplate.headerMessage)
+            }
+        });
+
         const headerParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(wppMessageTemplate.headerMessage).map(
             (param: string) => MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
