@@ -158,6 +158,7 @@ export class SendWppTemplateNotificationHelper {
                     wppManagerId: null,
                     createdAt: new Date(),
                     updatedAt: new Date(),
+                    finishedAt: new Date(),
                     companyId: params.company.id
                 }).get()
             );
