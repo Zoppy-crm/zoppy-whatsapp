@@ -32,7 +32,7 @@
         "@types/sequelize": "^4.28.14",
         "@types/supertest": "^2.0.11",
         "@typescript-eslint/eslint-plugin": "^5.30.0",
-        "@ZoppyTech/test-utils": "^0.1.6",
+        "@ZoppyTech/test-utils": "^0.1.17",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
@@ -65,8 +65,8 @@
     "peerDependencies": {
         "@nestjs/common": "^9.0.5",
         "@nestjs/config": "^2.2.0",
-        "@ZoppyTech/models": "^2.1.56",
-        "@ZoppyTech/utilities": "^1.1.67",
+        "@ZoppyTech/models": "^2.1.64",
+        "@ZoppyTech/utilities": "^1.1.80",
         "axios": "*",
         "uuid": "^8.3.2"
     },
