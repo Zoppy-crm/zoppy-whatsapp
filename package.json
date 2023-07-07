@@ -66,7 +66,7 @@
         "@nestjs/common": "^9.0.5",
         "@nestjs/config": "^2.2.0",
         "@ZoppyTech/models": "^2.1.65",
-        "@ZoppyTech/utilities": "^1.1.83",
+        "@ZoppyTech/utilities": "^1.1.84",
         "axios": "*",
         "uuid": "^8.3.2"
     },
