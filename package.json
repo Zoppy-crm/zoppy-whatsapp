@@ -65,8 +65,8 @@
     "peerDependencies": {
         "@nestjs/common": "^9.0.5",
         "@nestjs/config": "^2.2.0",
-        "@ZoppyTech/models": "^2.1.64",
-        "@ZoppyTech/utilities": "^1.1.80",
+        "@ZoppyTech/models": "^2.1.65",
+        "@ZoppyTech/utilities": "^1.1.83",
         "axios": "*",
         "uuid": "^8.3.2"
     },
