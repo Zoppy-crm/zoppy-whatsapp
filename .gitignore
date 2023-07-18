@@ -3,3 +3,5 @@ dist
 coverage
 .eslintcache
 database.sqlite
+.vscode
+.npmrc
