@@ -55,9 +55,7 @@ export class WhatsappMessageTemplateHelper {
                 order: [['createdAt', 'DESC']]
             });
 
-            if (wppMessageTemplate && wppMessageTemplate.status !== WhatsappConstants.MESSAGE_TEMPLATES.STATUS.REJECTED) {
-                continue;
-            }
+            if (wppMessageTemplate) continue;
 
             const templates: MessageTemplate[] = await MessageTemplate.findAll({
                 where: {
