@@ -7,11 +7,11 @@ import {
     MessageTemplateGroup,
     Order,
     User,
-    WppMessageTemplate,
     WppAccount,
     WppAccountPhoneNumber,
     WppContact,
-    WppMessage
+    WppMessage,
+    WppMessageTemplate
 } from '@ZoppyTech/models';
 import {
     ApiErrorMessages,
@@ -24,14 +24,14 @@ import {
 } from '@ZoppyTech/utilities';
 
 import { NotFoundException } from '@nestjs/common';
-import { BusinessMessageTemplatesResponse } from '../response/business-message-templates.response';
-import { UpsertTemplateMessageParameters, WhatsappMessageTemplateService } from '../service/whatsapp-message-template.service';
-import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
-import { TextMessageResponse } from '../response/text-message.response';
-import { WhatsappMessageService } from '../service/whatsapp-message.service';
-import { SyncGroupWhatsappRequest } from '../request/sync-group-whatsapp.request';
-import { LogService } from '../service/log/log.service';
 import { Op } from 'sequelize';
+import { SyncGroupWhatsappRequest } from '../request/sync-group-whatsapp.request';
+import { BusinessMessageTemplatesResponse } from '../response/business-message-templates.response';
+import { TextMessageResponse } from '../response/text-message.response';
+import { LogService } from '../service/log/log.service';
+import { UpsertTemplateMessageParameters, WhatsappMessageTemplateService } from '../service/whatsapp-message-template.service';
+import { WhatsappMessageService } from '../service/whatsapp-message.service';
+import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
 
 export class WhatsappMessageTemplateHelper {
     public static async sync(wppAccount: WppAccount): Promise<BusinessMessageTemplatesResponse[]> {
@@ -47,6 +47,16 @@ export class WhatsappMessageTemplateHelper {
         });
 
         for (const group of groups) {
+            const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
+                where: {
+                    messageTemplateGroupId: group.id,
+                    companyId: company.id
+                },
+                order: [['createdAt', 'DESC']]
+            });
+
+            if (wppMessageTemplate) continue;
+
             const templates: MessageTemplate[] = await MessageTemplate.findAll({
                 where: {
                     messageTemplateGroupId: group.id,
