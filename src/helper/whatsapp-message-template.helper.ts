@@ -42,7 +42,8 @@ export class WhatsappMessageTemplateHelper {
 
         const groups: MessageTemplateGroup[] = await MessageTemplateGroup.findAll({
             where: {
-                companyId: company.id
+                companyId: company.id,
+                type: MessageTemplateConstants.TYPES.WHATSAPP
             }
         });
 
