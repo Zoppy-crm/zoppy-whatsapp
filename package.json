@@ -1,6 +1,6 @@
 {
     "name": "@ZoppyTech/whatsapp",
-    "version": "0.0.81",
+    "version": "0.0.87",
     "description": "Zoppy Whatsapp",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -65,8 +65,8 @@
     "peerDependencies": {
         "@nestjs/common": "^9.0.5",
         "@nestjs/config": "^2.2.0",
-        "@ZoppyTech/utilities": "^1.1.119",
-        "@ZoppyTech/models": "^2.1.100",
+        "@ZoppyTech/utilities": "^1.1.125",
+        "@ZoppyTech/models": "^2.1.104",
         "axios": "*",
         "uuid": "^8.3.2"
     },

@@ -43,7 +43,10 @@ export class WhatsappMessageTemplateHelper {
         const groups: MessageTemplateGroup[] = await MessageTemplateGroup.findAll({
             where: {
                 companyId: company.id,
-                type: MessageTemplateConstants.TYPES.WHATSAPP
+                type: 'whatsapp',
+                deletedAt: {
+                    [Op.eq]: null
+                }
             }
         });
 
@@ -51,7 +54,10 @@ export class WhatsappMessageTemplateHelper {
             const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
                 where: {
                     messageTemplateGroupId: group.id,
-                    companyId: company.id
+                    companyId: company.id,
+                    deletedAt: {
+                        [Op.eq]: null
+                    }
                 },
                 order: [['createdAt', 'DESC']]
             });
@@ -61,12 +67,17 @@ export class WhatsappMessageTemplateHelper {
             const templates: MessageTemplate[] = await MessageTemplate.findAll({
                 where: {
                     messageTemplateGroupId: group.id,
-                    companyId: company.id
+                    companyId: company.id,
+                    deletedAt: {
+                        [Op.eq]: null
+                    }
                 },
                 order: [['position', 'ASC']]
             });
 
             const concatMessage: string = templates.map((template: MessageTemplate) => template.text).join(`\n\n`);
+
+            if (!concatMessage) continue;
 
             for (const template of templates)
                 MessageTemplate.destroy({
