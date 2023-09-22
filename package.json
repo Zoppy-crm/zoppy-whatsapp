@@ -1,6 +1,6 @@
 {
     "name": "@ZoppyTech/whatsapp",
-    "version": "0.0.91",
+    "version": "1.0.0",
     "description": "Zoppy Whatsapp",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
