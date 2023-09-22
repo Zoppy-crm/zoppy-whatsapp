@@ -5,7 +5,9 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "publish:whatsapp": "npm version patch && npm run build && npm publish",
+        "publish:patch": "npm version patch && npm run build && npm publish",
+        "publish:minor": "npm version minor && npm run build && npm publish",
+        "publish:major": "npm version major && npm run build && npm publish",
         "test": "rm -f database.sqlite && npx jest",
         "test:cov": "npx jest --coverage",
         "prepare": "husky install",
@@ -32,7 +34,7 @@
         "@types/sequelize": "^4.28.14",
         "@types/supertest": "^2.0.11",
         "@typescript-eslint/eslint-plugin": "^5.30.0",
-        "@ZoppyTech/test-utils": "^0.1.37",
+        "@ZoppyTech/test-utils": "^1.0.1",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
@@ -65,8 +67,8 @@
     "peerDependencies": {
         "@nestjs/common": "^9.0.5",
         "@nestjs/config": "^2.2.0",
-        "@ZoppyTech/utilities": "^1.1.147",
-        "@ZoppyTech/models": "^2.3.7",
+        "@ZoppyTech/utilities": "^2.0.2",
+        "@ZoppyTech/models": "^3.0.2",
         "axios": "*",
         "uuid": "^8.3.2"
     },
