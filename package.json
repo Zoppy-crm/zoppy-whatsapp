@@ -67,9 +67,9 @@
     "peerDependencies": {
         "axios": "^0.27.2",
         "uuid": "^8.3.2",
-        "@ZoppyTech/utilities": "~2.1.1",
-        "@ZoppyTech/models": "~4.2.1",
-        "@ZoppyTech/shared": "~2.0.13"
+        "@ZoppyTech/utilities": "~2.1.5",
+        "@ZoppyTech/models": "~4.2.9",
+        "@ZoppyTech/shared": "~2.0.20"
     },
     "lint-staged": {
         "*.{ts,js}": "eslint --cache --fix"
