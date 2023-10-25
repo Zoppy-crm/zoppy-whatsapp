@@ -15,7 +15,7 @@ export class WhatsappService {
         console.log(JSON.stringify(params));
         console.log(JSON.stringify(url));
 
-        const response: any = axios.get(url, { params: params });
+        const response: any = await axios.get(url, { params: params });
         return response.data;
     }
 }
