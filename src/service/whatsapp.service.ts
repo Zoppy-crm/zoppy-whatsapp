@@ -1,10 +1,10 @@
-import { WhatsappWindowCountRequest } from '../request/whatsapp-window-count.request';
-import { WhatsappWindowCountResponse } from '../response/whatsapp-window-count.response';
 import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
+import { WhatsappConversationRequest } from '../request/whatsapp-conversation.request';
+import { WhatsappConversationResponse } from '../response/whatsapp-conversation.response';
 
 export class WhatsappService {
-    public static async get(request: WhatsappWindowCountRequest): Promise<WhatsappWindowCountResponse> {
+    public static async getConversations(request: WhatsappConversationRequest): Promise<WhatsappConversationResponse> {
         const url: string = WhatsappRoutes.makeBaseUrl();
 
         const params: any = {

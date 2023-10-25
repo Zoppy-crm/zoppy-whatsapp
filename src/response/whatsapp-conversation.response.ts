@@ -1,4 +1,4 @@
-export interface WhatsappWindowCountResponse {
+export interface WhatsappConversationResponse {
     conversation_analytics: {
         data: [
             {
