@@ -186,7 +186,8 @@ Um abraço!`;
             identifier: messageTemplateGroup.identifier,
             company: company,
             orderId: order.id,
-            couponCode: coupon.code
+            couponCode: coupon.code,
+            messageTemplateGroupId: null
         });
 
         expect(response.content).toBeTruthy();

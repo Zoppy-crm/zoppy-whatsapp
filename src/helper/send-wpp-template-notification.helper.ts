@@ -43,12 +43,19 @@ export class SendWppTemplateNotificationHelper {
 
         if (!address) return;
 
-        const messageTemplateGroup: MessageTemplateGroup = await MessageTemplateGroup.findOne({
-            where: {
-                companyId: params.company.id,
-                identifier: params.identifier
-            }
-        });
+        const messageTemplateGroup: MessageTemplateGroup = params.messageTemplateGroupId
+            ? await MessageTemplateGroup.findOne({
+                  where: {
+                      companyId: params.company.id,
+                      id: params.messageTemplateGroupId
+                  }
+              })
+            : await MessageTemplateGroup.findOne({
+                  where: {
+                      companyId: params.company.id,
+                      identifier: params.identifier
+                  }
+              });
 
         await LogService.info({
             message: {
@@ -246,6 +253,7 @@ export class SendWppTemplateNotificationHelper {
 }
 
 interface Parameters {
+    messageTemplateGroupId: string;
     phone: string;
     identifier: string;
     company: Company;
