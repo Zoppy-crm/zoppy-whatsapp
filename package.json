@@ -68,7 +68,7 @@
         "axios": "*",
         "uuid": "*",
         "@ZoppyTech/utilities": "~2.1.30",
-        "@ZoppyTech/models": "~4.3.22",
+        "@ZoppyTech/models": "~4.3.24",
         "@ZoppyTech/shared": "~3.1.25"
     },
     "lint-staged": {

@@ -1,53 +1,48 @@
-import { Address, Company, Coupon, Customer, GiftbackConfig, LineItem, Nps, Order, Product, User } from '@ZoppyTech/models';
-import { AppConstants, WcStatusConstants } from '@ZoppyTech/utilities';
+import {
+    Address,
+    Company,
+    Coupon,
+    Customer,
+    Feature,
+    GiftbackConfig,
+    LineItem,
+    Nps,
+    Order,
+    Product,
+    ScheduledWcCoupon,
+    User
+} from '@ZoppyTech/models';
+import { AppConstants, Features, WcStatusConstants } from '@ZoppyTech/utilities';
 
 export class TemplateFetchEntitiesHelper {
     public static async execute(params: Parameters): Promise<TemplateFetchEntitiesHelperResponse> {
         const response: TemplateFetchEntitiesHelperResponse = {};
 
+        const hasWorkflow: Feature = await Feature.findOne({
+            where: { companyId: params.companyId, name: Features.Workflow, active: true }
+        });
         const company: Company = await Company.findByPk(params.companyId);
         const address: Address = params.address ?? (await Address.findByPk(params.addressId));
+        const scheduledCoupon: ScheduledWcCoupon = await ScheduledWcCoupon.findOne({ where: { companyId: company.id, code: params.code } });
         const customer: Customer =
-            params.customer ??
-            (await Customer.findOne({
-                where: {
-                    companyId: params.companyId,
-                    billingId: address.id
-                }
-            }));
+            params.customer ?? (await Customer.findOne({ where: { companyId: params.companyId, billingId: address.id } }));
 
         const nps: Nps = params.npsId
             ? await Nps.findByPk(params.npsId)
-            : await Nps.findOne({
-                  where: {
-                      customerId: customer.id,
-                      companyId: params.companyId
-                  }
-              });
+            : await Nps.findOne({ where: { customerId: customer.id, companyId: params.companyId } });
 
         const order: Order = params.orderId
             ? await Order.findByPk(params.orderId)
-            : await Order.findOne({
-                  where: {
-                      status: WcStatusConstants.COMPLETED,
-                      billingId: address.id
-                  }
-              });
+            : await Order.findOne({ where: { status: WcStatusConstants.COMPLETED, billingId: address.id } });
 
         if (order) {
             const lineItems: LineItem[] = await LineItem.findAll({
-                where: {
-                    companyId: params.companyId,
-                    orderId: order.id
-                }
+                where: { companyId: params.companyId, orderId: order.id }
             });
 
             if (lineItems.length) {
                 const products: Product[] = await Product.findAll({
-                    where: {
-                        companyId: params.companyId,
-                        id: lineItems.map((lineItem: LineItem) => lineItem.productId)
-                    }
+                    where: { companyId: params.companyId, id: lineItems.map((lineItem: LineItem) => lineItem.productId) }
                 });
                 response.lastPurchaseProducts = products;
             }
@@ -59,12 +54,7 @@ export class TemplateFetchEntitiesHelper {
             ? await User.findByPk(order.userId)
             : customer.userId
             ? await User.findByPk(customer.userId)
-            : await User.findOne({
-                  where: {
-                      companyId: company.id,
-                      role: AppConstants.ROLES.ADMIN
-                  }
-              });
+            : await User.findOne({ where: { companyId: company.id, role: AppConstants.ROLES.ADMIN } });
 
         const coupon: Coupon = await Coupon.findOne({
             where: {
@@ -73,11 +63,9 @@ export class TemplateFetchEntitiesHelper {
             }
         });
 
-        const giftbackConfig: GiftbackConfig = await GiftbackConfig.findOne({
-            where: {
-                companyId: params.companyId
-            }
-        });
+        const giftbackConfig: GiftbackConfig = hasWorkflow
+            ? GiftbackConfig.build({ maxPercentValue: scheduledCoupon?.percentValue, percentValue: scheduledCoupon.maxPercentValue })
+            : await GiftbackConfig.findOne({ where: { companyId: params.companyId } });
 
         response.clientAddress = address;
         response.seller = seller;
