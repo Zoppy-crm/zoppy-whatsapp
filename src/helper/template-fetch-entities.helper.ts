@@ -12,7 +12,7 @@ import {
     ScheduledWcCoupon,
     User
 } from '@ZoppyTech/models';
-import { AppConstants, Features, WcStatusConstants } from '@ZoppyTech/utilities';
+import { AppConstants, Features, StringUtil, WcStatusConstants } from '@ZoppyTech/utilities';
 
 export class TemplateFetchEntitiesHelper {
     public static async execute(params: Parameters): Promise<TemplateFetchEntitiesHelperResponse> {
@@ -23,7 +23,9 @@ export class TemplateFetchEntitiesHelper {
         });
         const company: Company = await Company.findByPk(params.companyId);
         const address: Address = params.address ?? (await Address.findByPk(params.addressId));
-        const scheduledCoupon: ScheduledWcCoupon = await ScheduledWcCoupon.findOne({ where: { companyId: company.id, code: params.code } });
+        const scheduledCoupon: ScheduledWcCoupon = params.code
+            ? await ScheduledWcCoupon.findOne({ where: { companyId: company.id, code: params.code } })
+            : null;
         const customer: Customer =
             params.customer ?? (await Customer.findOne({ where: { companyId: params.companyId, billingId: address.id } }));
 
@@ -59,7 +61,7 @@ export class TemplateFetchEntitiesHelper {
         const coupon: Coupon = await Coupon.findOne({
             where: {
                 companyId: params.companyId,
-                code: params.code ?? 'none'
+                code: params.code ?? StringUtil.generateUuid()
             }
         });
 
