@@ -69,7 +69,7 @@
         "uuid": "*",
         "@ZoppyTech/utilities": "~2.1.30",
         "@ZoppyTech/models": "~4.3.24",
-        "@ZoppyTech/shared": "~3.1.25"
+        "@ZoppyTech/shared": "~5.0.1"
     },
     "lint-staged": {
         "*.{ts,js}": "eslint --cache --fix"
