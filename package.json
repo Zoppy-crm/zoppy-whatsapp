@@ -34,7 +34,7 @@
         "@types/sequelize": "^4.28.14",
         "@types/supertest": "^2.0.11",
         "@typescript-eslint/eslint-plugin": "^5.30.0",
-        "@ZoppyTech/test-utils": "~1.2.10",
+        "@ZoppyTech/test-utils": "*",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-standard-with-typescript": "^23.0.0",
@@ -67,9 +67,9 @@
     "peerDependencies": {
         "axios": "*",
         "uuid": "*",
-        "@ZoppyTech/utilities": "~2.1.30",
-        "@ZoppyTech/models": "~4.3.24",
-        "@ZoppyTech/shared": "~5.0.1"
+        "@ZoppyTech/utilities": "*",
+        "@ZoppyTech/models": "*",
+        "@ZoppyTech/shared": "*"
     },
     "lint-staged": {
         "*.{ts,js}": "eslint --cache --fix"
