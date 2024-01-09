@@ -17,7 +17,9 @@ export class WhatsappWindowCountHelper {
         };
 
         const conversations: WhatsappConversationResponse = await WhatsappService.getConversations(request);
-        const count: number = conversations.conversation_analytics?.data[0]?.data_points?.length ?? 0;
+
+        let count: number = 0;
+        for (const conversation of conversations.conversation_analytics?.data[0]?.data_points ?? []) count += conversation.conversation;
 
         return count;
     }
