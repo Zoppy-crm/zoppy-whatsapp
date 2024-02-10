@@ -34,7 +34,7 @@ import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
 
 export class WhatsappMessageTemplateHelper {
-    public static async sync(wppAccount: WppAccount): Promise<BusinessMessageTemplatesResponse[]> {
+    public static async sync(wppAccount: WppAccount, createDefaultFooter: boolean = false): Promise<BusinessMessageTemplatesResponse[]> {
         const response: BusinessMessageTemplatesResponse[] = [];
         if (!wppAccount || !wppAccount.active) return response;
 
@@ -51,6 +51,12 @@ export class WhatsappMessageTemplateHelper {
         });
 
         for (const group of groups) {
+            let footerMessage: string = '';
+
+            if (group.default && createDefaultFooter) {
+                footerMessage = 'Caso não deseje receber mensagens com descontos personalizados, basta responder "não quero"'
+            }
+
             const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
                 where: {
                     messageTemplateGroupId: group.id,
@@ -92,6 +98,7 @@ export class WhatsappMessageTemplateHelper {
                 position: 0,
                 messageTemplateGroupId: group.id,
                 parameters: MessageTemplateUtil.extractTemplateParameters(concatMessage),
+                footerMessage: footerMessage,
                 companyId: company.id,
                 createdAt: new Date(),
                 updatedAt: new Date()
