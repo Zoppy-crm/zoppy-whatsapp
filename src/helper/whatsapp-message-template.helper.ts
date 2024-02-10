@@ -51,7 +51,7 @@ export class WhatsappMessageTemplateHelper {
         });
 
         for (const group of groups) {
-            let footerMessage: string = '';
+            let footerMessage: string | undefined = undefined;
 
             if (group.default && createDefaultFooter) {
                 footerMessage = 'Caso não deseje receber mensagens com descontos personalizados, basta responder "não quero"'
@@ -98,7 +98,6 @@ export class WhatsappMessageTemplateHelper {
                 position: 0,
                 messageTemplateGroupId: group.id,
                 parameters: MessageTemplateUtil.extractTemplateParameters(concatMessage),
-                footerMessage: footerMessage,
                 companyId: company.id,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -108,7 +107,8 @@ export class WhatsappMessageTemplateHelper {
                 group: group,
                 template: newTemplate,
                 wppAccount: wppAccount,
-                company: company
+                company: company,
+                defaultFooter: footerMessage,
             });
             response.push(wppTemplate);
         }
@@ -123,7 +123,7 @@ export class WhatsappMessageTemplateHelper {
 
         const body: UpsertTemplateMessageParameters = {
             name: wppName,
-            footerMessage: params.request?.footerMessage,
+            footerMessage: params.defaultFooter? params.defaultFooter : params.request?.footerMessage,
             headerMessage: params.request?.headerMessage,
             wppMessageTemplateId: params.createWppMessageTemplateId,
             text: params.template.text,
@@ -405,6 +405,7 @@ interface UpsertTemplateParameters {
     request?: SyncGroupWhatsappRequest;
     company: Company;
     createWppMessageTemplateId?: string;
+    defaultFooter?: string
 }
 
 interface SendTemplateParams {
