@@ -65,7 +65,7 @@ export class TemplateFetchEntitiesHelper {
             }
         });
 
-        const giftbackConfig: GiftbackConfig = hasWorkflow
+        const giftbackConfig: GiftbackConfig = hasWorkflow && scheduledCoupon
             ? GiftbackConfig.build({ maxPercentValue: scheduledCoupon?.percentValue, percentValue: scheduledCoupon?.maxPercentValue })
             : await GiftbackConfig.findOne({ where: { companyId: params.companyId } });
 
