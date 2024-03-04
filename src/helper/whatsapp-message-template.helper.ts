@@ -34,7 +34,7 @@ import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
 
 export class WhatsappMessageTemplateHelper {
-    public static async sync(wppAccount: WppAccount): Promise<BusinessMessageTemplatesResponse[]> {
+    public static async sync(wppAccount: WppAccount, createDefaultFooter: boolean = false): Promise<BusinessMessageTemplatesResponse[]> {
         const response: BusinessMessageTemplatesResponse[] = [];
         if (!wppAccount || !wppAccount.active) return response;
 
@@ -51,6 +51,12 @@ export class WhatsappMessageTemplateHelper {
         });
 
         for (const group of groups) {
+            let footerMessage: string | undefined = undefined;
+
+            if (group.default && createDefaultFooter) {
+                footerMessage = 'Caso não deseje receber mensagens com descontos personalizados, basta responder "não quero"'
+            }
+
             const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
                 where: {
                     messageTemplateGroupId: group.id,
@@ -101,7 +107,8 @@ export class WhatsappMessageTemplateHelper {
                 group: group,
                 template: newTemplate,
                 wppAccount: wppAccount,
-                company: company
+                company: company,
+                defaultFooter: footerMessage,
             });
             response.push(wppTemplate);
         }
@@ -116,7 +123,7 @@ export class WhatsappMessageTemplateHelper {
 
         const body: UpsertTemplateMessageParameters = {
             name: wppName,
-            footerMessage: params.request?.footerMessage,
+            footerMessage: params.defaultFooter? params.defaultFooter : params.request?.footerMessage,
             headerMessage: params.request?.headerMessage,
             wppMessageTemplateId: params.createWppMessageTemplateId,
             text: params.template.text,
@@ -398,6 +405,7 @@ interface UpsertTemplateParameters {
     request?: SyncGroupWhatsappRequest;
     company: Company;
     createWppMessageTemplateId?: string;
+    defaultFooter?: string
 }
 
 interface SendTemplateParams {
