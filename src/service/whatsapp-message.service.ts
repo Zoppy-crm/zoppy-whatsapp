@@ -97,7 +97,10 @@ export class WhatsappMessageService {
                     error: error
                 }
             });
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 }

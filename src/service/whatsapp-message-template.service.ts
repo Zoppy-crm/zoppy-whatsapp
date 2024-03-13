@@ -14,7 +14,10 @@ export class WhatsappMessageTemplateService {
             return response.data;
         } catch (error: any) {
             console.log(error.body);
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 
@@ -25,7 +28,10 @@ export class WhatsappMessageTemplateService {
             return response.data;
         } catch (error: any) {
             console.log(error.body);
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 
@@ -36,7 +42,10 @@ export class WhatsappMessageTemplateService {
             return response.data;
         } catch (error: any) {
             console.log(error.body);
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 
@@ -65,7 +74,10 @@ export class WhatsappMessageTemplateService {
                     error: error
                 }
             });
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 
@@ -94,7 +106,10 @@ export class WhatsappMessageTemplateService {
                     message: 'Error when updating whatsapp template'
                 }
             });
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 
@@ -110,7 +125,10 @@ export class WhatsappMessageTemplateService {
             return response.data;
         } catch (error: any) {
             console.log(error);
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 

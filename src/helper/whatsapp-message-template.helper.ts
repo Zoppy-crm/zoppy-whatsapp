@@ -79,12 +79,7 @@ export class WhatsappMessageTemplateHelper {
 
             if (!concatMessage) continue;
 
-            for (const template of templates)
-                MessageTemplate.destroy({
-                    where: {
-                        id: template.id
-                    }
-                });
+            for (const template of templates) MessageTemplate.destroy({ where: { id: template.id } });
 
             const newTemplate: MessageTemplate = await MessageTemplate.create({
                 id: StringUtil.generateUuid(),

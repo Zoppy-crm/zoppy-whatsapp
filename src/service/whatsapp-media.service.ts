@@ -32,7 +32,10 @@ export class WhatsappMediaService {
         } catch (error: any) {
             console.log('Failed to execute create Ssssion on Wpp Business');
             console.log(error);
-            throw new UnprocessableEntityException(ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API);
+            throw new UnprocessableEntityException(
+                error.response?.data?.error?.message ??
+                    ApiErrorMessages.WHATSAPP_SERVICE_SOMETHING_UNEXPECTED_HAPPENED_IN_WHATSAPP_CLOUD_API
+            );
         }
     }
 
