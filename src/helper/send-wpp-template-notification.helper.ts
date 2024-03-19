@@ -28,34 +28,16 @@ import { WhatsappUtilities } from '../util/whatsapp-utilities';
 export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {
         const address: Address = await Address.findOne({
-            where: {
-                companyId: params.company.id,
-                phone: WhatsappUtil.getPhoneWithoutCountryCode(params.phone, true)
-            }
+            where: { companyId: params.company.id, phone: WhatsappUtil.getPhoneWithoutCountryCode(params.phone, true) }
         });
 
-        await LogService.info({
-            message: {
-                message: 'Found Address to send Wpp Template Notification',
-                address: address?.get()
-            }
-        });
+        await LogService.info({ message: { message: 'Found Address to send Wpp Template Notification', address: address?.get() } });
 
         if (!address) return;
 
         const messageTemplateGroup: MessageTemplateGroup = params.messageTemplateGroupId
-            ? await MessageTemplateGroup.findOne({
-                  where: {
-                      companyId: params.company.id,
-                      id: params.messageTemplateGroupId
-                  }
-              })
-            : await MessageTemplateGroup.findOne({
-                  where: {
-                      companyId: params.company.id,
-                      identifier: params.identifier
-                  }
-              });
+            ? await MessageTemplateGroup.findOne({ where: { companyId: params.company.id, id: params.messageTemplateGroupId } })
+            : await MessageTemplateGroup.findOne({ where: { companyId: params.company.id, identifier: params.identifier } });
 
         await LogService.info({
             message: {
@@ -66,59 +48,33 @@ export class SendWppTemplateNotificationHelper {
 
         if (!messageTemplateGroup) throw new UnprocessableEntityException('Template não encontrado');
 
-        const messageTemplate: MessageTemplate = await MessageTemplate.findOne({
-            where: {
-                companyId: params.company.id,
-                messageTemplateGroupId: messageTemplateGroup.id
-            }
+        const messageTemplates: MessageTemplate[] = await MessageTemplate.findAll({
+            where: { companyId: params.company.id, messageTemplateGroupId: messageTemplateGroup.id }
         });
-        if (!messageTemplate) throw new UnprocessableEntityException('Template não encontrado');
+        if (!messageTemplates.length) throw new UnprocessableEntityException('Template não encontrado');
 
-        await LogService.info({
-            message: {
-                message: 'Found Template',
-                address: messageTemplateGroup?.get()
-            }
-        });
+        await LogService.info({ message: { message: 'Found Template', address: messageTemplateGroup?.get() } });
 
         const wppMessageTemplate: WppMessageTemplate = await WppMessageTemplate.findOne({
-            where: {
-                companyId: params.company.id,
-                messageTemplateGroupId: messageTemplateGroup.id
-            }
+            where: { companyId: params.company.id, messageTemplateGroupId: messageTemplateGroup.id }
         });
 
-        await LogService.info({
-            message: {
-                message: 'Found Wpp Template',
-                address: messageTemplateGroup?.get()
-            }
-        });
+        await LogService.info({ message: { message: 'Found Wpp Template', address: messageTemplateGroup?.get() } });
 
         if (!wppMessageTemplate || wppMessageTemplate.status !== WhatsappConstants.MESSAGE_TEMPLATES.STATUS.APPROVED)
             throw new UnprocessableEntityException('Template não aprovado');
 
-        const whatsappAccount: WppAccount = await WppAccount.findOne({
-            where: {
-                companyId: params.company.id
-            }
-        });
+        const whatsappAccount: WppAccount = await WppAccount.findOne({ where: { companyId: params.company.id } });
         if (!whatsappAccount) throw new NotFoundException(ApiErrorMessages.WHATSAPP_ACCOUNT_NOT_FOUND_OR_DELETED);
 
         const whatsappPhoneNumber: WppAccountPhoneNumber = await WppAccountPhoneNumber.findOne({
-            where: {
-                companyId: params.company.id,
-                default: true
-            }
+            where: { companyId: params.company.id, default: true }
         });
         if (!whatsappPhoneNumber) throw new NotFoundException(ApiErrorMessages.WHATSAPP_ACCOUNT_PHONE_NUMBER_NOT_FOUND_OR_DELETED);
 
         const contactPhoneSliced: PhoneNumberSliced = WhatsappUtil.slicePhone(params.phone);
         let whatsappContact: WppContact = await WppContact.findOne({
-            where: {
-                companyId: params.company.id,
-                phone: contactPhoneSliced.getPhoneWithoutCountryCode()
-            }
+            where: { companyId: params.company.id, phone: contactPhoneSliced.getPhoneWithoutCountryCode() }
         });
 
         if (!whatsappContact) {
@@ -149,10 +105,7 @@ export class SendWppTemplateNotificationHelper {
         });
 
         let latestConversation: WppConversation = await WppConversation.findOne({
-            where: {
-                wppContactId: whatsappContact.id,
-                companyId: params.company.id
-            },
+            where: { wppContactId: whatsappContact.id, companyId: params.company.id },
             order: [['createdAt', 'DESC']]
         });
         if (!latestConversation) {
@@ -192,10 +145,12 @@ export class SendWppTemplateNotificationHelper {
             }
         });
 
+        const concatMessage: string = messageTemplates.map((template: MessageTemplate) => template.text).join(`\n\n`);
+
         const headerParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(wppMessageTemplate.headerMessage).map(
             (param: string) => MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
-        const bodyParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(messageTemplate.text).map((param: string) =>
+        const bodyParamValues: string[] = MessageTemplateUtil.extractTemplateParameters(concatMessage).map((param: string) =>
             MessageTemplateUtil.getParameterValue(param, parameterEntities)
         );
 
@@ -224,7 +179,7 @@ export class SendWppTemplateNotificationHelper {
         const newMessage: WppMessage = WppMessage.build({
             id: StringUtil.generateUuid(),
             companyId: params.company.id,
-            content: MessageTemplateUtil.replaceParameters(messageTemplate.text, parameterEntities),
+            content: MessageTemplateUtil.replaceParameters(concatMessage, parameterEntities),
             headerContent: MessageTemplateUtil.replaceParameters(wppMessageTemplate.headerMessage, parameterEntities),
             footerContent: wppMessageTemplate.footerMessage,
             ctaLabel: wppMessageTemplate.ctaLabel,
@@ -241,12 +196,7 @@ export class SendWppTemplateNotificationHelper {
             updatedAt: new Date()
         });
 
-        await LogService.info({
-            message: {
-                message: 'New Message created',
-                address: newMessage
-            }
-        });
+        await LogService.info({ message: { message: 'New Message created', address: newMessage } });
 
         return await WppMessage.create(newMessage.get());
     }
