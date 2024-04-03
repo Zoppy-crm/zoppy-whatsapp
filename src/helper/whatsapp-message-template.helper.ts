@@ -16,6 +16,7 @@ import {
 import {
     ApiErrorMessages,
     MessageTemplateConstants,
+    MessageTemplateParameterEntities,
     MessageTemplateUtil,
     StringUtil,
     WcStatusConstants,
@@ -31,7 +32,7 @@ import { TextMessageResponse } from '../response/text-message.response';
 import { LogService } from '../service/log/log.service';
 import { UpsertTemplateMessageParameters, WhatsappMessageTemplateService } from '../service/whatsapp-message-template.service';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
-import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
+import { TemplateFetchEntitiesHelper } from './template-fetch-entities.helper';
 
 export class WhatsappMessageTemplateHelper {
     public static async sync(wppAccount: WppAccount): Promise<BusinessMessageTemplatesResponse[]> {
@@ -223,19 +224,8 @@ export class WhatsappMessageTemplateHelper {
 
     public static async sendDefaultTemplateMessage(params: SendTemplateParams): Promise<WppMessage> {
         const accountCredentials: WppAccountPhoneNumber = await WppAccountPhoneNumber.findOne({
-            where: {
-                phoneNumberId: params.wppPhoneNumberId,
-                companyId: params.company.id
-            },
-            include: [
-                {
-                    model: WppAccount,
-                    where: {
-                        active: true
-                    },
-                    required: true
-                }
-            ]
+            where: { phoneNumberId: params.wppPhoneNumberId, companyId: params.company.id },
+            include: [{ model: WppAccount, where: { active: true }, required: true }]
         });
         if (!accountCredentials) throw new NotFoundException(ApiErrorMessages.WHATSAPP_ACCOUNT_NOT_FOUND_OR_DELETED);
 
@@ -277,37 +267,16 @@ export class WhatsappMessageTemplateHelper {
         }
 
         const order: Order = await Order.findOne({
-            where: {
-                status: {
-                    [Op.eq]: WcStatusConstants.COMPLETED
-                }
-            },
-            include: [
-                {
-                    model: Address,
-                    required: true,
-                    where: {
-                        phone: address.phone
-                    }
-                }
-            ],
+            where: { status: { [Op.eq]: WcStatusConstants.COMPLETED } },
+            include: [{ model: Address, required: true, where: { phone: address.phone } }],
             order: [['completedAt', 'ASC']]
         });
         const coupon: Coupon = await Coupon.findOne({
-            where: {
-                used: {
-                    [Op.not]: true
-                },
-                companyId: params.company.id,
-                expiryDate: {
-                    [Op.gte]: new Date()
-                },
-                phone: address.phone
-            },
+            where: { used: { [Op.not]: true }, companyId: params.company.id, expiryDate: { [Op.gte]: new Date() }, phone: address.phone },
             order: [['createdAt', 'DESC']]
         });
 
-        const parameterEntities: TemplateFetchEntitiesHelperResponse = await TemplateFetchEntitiesHelper.execute({
+        const parameterEntities: MessageTemplateParameterEntities = await TemplateFetchEntitiesHelper.execute({
             addressId: address.id,
             orderId: order?.id,
             companyId: params.company.id,

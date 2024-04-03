@@ -12,11 +12,11 @@ import {
     ScheduledWcCoupon,
     User
 } from '@ZoppyTech/models';
-import { AppConstants, Features, StringUtil, WcStatusConstants } from '@ZoppyTech/utilities';
+import { AppConstants, Features, MessageTemplateParameterEntities, StringUtil, WcStatusConstants } from '@ZoppyTech/utilities';
 
 export class TemplateFetchEntitiesHelper {
-    public static async execute(params: Parameters): Promise<TemplateFetchEntitiesHelperResponse> {
-        const response: TemplateFetchEntitiesHelperResponse = {};
+    public static async execute(params: Parameters): Promise<MessageTemplateParameterEntities> {
+        const response: MessageTemplateParameterEntities = {};
 
         const hasWorkflow: Feature = await Feature.findOne({
             where: { companyId: params.companyId, name: Features.Workflow, active: true }
@@ -65,9 +65,10 @@ export class TemplateFetchEntitiesHelper {
             }
         });
 
-        const giftbackConfig: GiftbackConfig = hasWorkflow && scheduledCoupon
-            ? GiftbackConfig.build({ maxPercentValue: scheduledCoupon?.percentValue, percentValue: scheduledCoupon?.maxPercentValue })
-            : await GiftbackConfig.findOne({ where: { companyId: params.companyId } });
+        const giftbackConfig: GiftbackConfig =
+            hasWorkflow && scheduledCoupon
+                ? GiftbackConfig.build({ maxPercentValue: scheduledCoupon?.percentValue, percentValue: scheduledCoupon?.maxPercentValue })
+                : await GiftbackConfig.findOne({ where: { companyId: params.companyId } });
 
         response.clientAddress = address;
         response.seller = seller;
@@ -90,15 +91,4 @@ export interface Parameters {
     userId?: string;
     address?: Address;
     customer?: Customer;
-}
-
-export interface TemplateFetchEntitiesHelperResponse {
-    clientAddress?: Address;
-    company?: Company;
-    coupon?: Coupon;
-    giftbackConfig?: GiftbackConfig;
-    lastPurchase?: Order;
-    lastPurchaseProducts?: Product[];
-    nps?: Nps;
-    seller?: User;
 }

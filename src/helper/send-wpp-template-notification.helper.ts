@@ -12,6 +12,7 @@ import {
 } from '@ZoppyTech/models';
 import {
     ApiErrorMessages,
+    MessageTemplateParameterEntities,
     MessageTemplateUtil,
     PhoneNumberSliced,
     StringUtil,
@@ -19,7 +20,7 @@ import {
     WhatsappUtil
 } from '@ZoppyTech/utilities';
 import { NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { TemplateFetchEntitiesHelper, TemplateFetchEntitiesHelperResponse } from './template-fetch-entities.helper';
+import { TemplateFetchEntitiesHelper } from './template-fetch-entities.helper';
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { LogService } from '../service/log/log.service';
@@ -124,7 +125,7 @@ export class SendWppTemplateNotificationHelper {
             );
         }
 
-        const parameterEntities: TemplateFetchEntitiesHelperResponse = await TemplateFetchEntitiesHelper.execute({
+        const parameterEntities: MessageTemplateParameterEntities = await TemplateFetchEntitiesHelper.execute({
             addressId: address.id,
             orderId: params.orderId,
             companyId: params.company.id,
