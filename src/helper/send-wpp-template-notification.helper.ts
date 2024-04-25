@@ -20,11 +20,11 @@ import {
     WhatsappUtil
 } from '@ZoppyTech/utilities';
 import { NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { TemplateFetchEntitiesHelper } from './template-fetch-entities.helper';
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { LogService } from '../service/log/log.service';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
+import { MessageTemplateHelper } from '@ZoppyTech/shared';
 
 export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {
@@ -125,9 +125,10 @@ export class SendWppTemplateNotificationHelper {
             );
         }
 
-        const parameterEntities: MessageTemplateParameterEntities = await TemplateFetchEntitiesHelper.execute({
+        const parameterEntities: MessageTemplateParameterEntities = await MessageTemplateHelper.fetchEntities({
             addressId: address.id,
             orderId: params.orderId,
+            abandonedCartId: params.abandonedCartId,
             companyId: params.company.id,
             code: params.couponCode
         });
@@ -209,5 +210,6 @@ interface Parameters {
     identifier: string;
     company: Company;
     orderId: string;
+    abandonedCartId: string;
     couponCode: string;
 }
