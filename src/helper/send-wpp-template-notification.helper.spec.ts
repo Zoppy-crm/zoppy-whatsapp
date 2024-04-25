@@ -186,6 +186,7 @@ Um abraço!`;
             identifier: messageTemplateGroup.identifier,
             company: company,
             orderId: order.id,
+            abandonedCartId: null,
             couponCode: coupon.code,
             messageTemplateGroupId: null
         });
