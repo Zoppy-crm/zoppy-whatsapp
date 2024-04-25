@@ -16,7 +16,7 @@ import { AppConstants, Features, MessageTemplateParameterEntities, StringUtil, W
 
 export class TemplateFetchEntitiesHelper {
     public static async execute(params: Parameters): Promise<MessageTemplateParameterEntities> {
-        const response: MessageTemplateParameterEntities = {};
+        const response: MessageTemplateParameterEntities = {} as MessageTemplateParameterEntities;
 
         const hasWorkflow: Feature = await Feature.findOne({
             where: { companyId: params.companyId, name: Features.Workflow, active: true }
@@ -53,10 +53,10 @@ export class TemplateFetchEntitiesHelper {
         const seller: User = params.userId
             ? await User.findByPk(params.userId)
             : order?.userId
-            ? await User.findByPk(order.userId)
-            : customer.userId
-            ? await User.findByPk(customer.userId)
-            : await User.findOne({ where: { companyId: company.id, role: AppConstants.ROLES.ADMIN } });
+              ? await User.findByPk(order.userId)
+              : customer.userId
+                ? await User.findByPk(customer.userId)
+                : await User.findOne({ where: { companyId: company.id, role: AppConstants.ROLES.ADMIN } });
 
         const coupon: Coupon = await Coupon.findOne({
             where: {
