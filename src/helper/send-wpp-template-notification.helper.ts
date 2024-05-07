@@ -22,9 +22,9 @@ import {
 import { NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
-import { LogService } from '../service/log/log.service';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
 import { MessageTemplateHelper } from '@ZoppyTech/shared';
+import { LogService } from '@ZoppyTech/logger';
 
 export class SendWppTemplateNotificationHelper {
     public static async send(params: Parameters): Promise<WppMessage> {

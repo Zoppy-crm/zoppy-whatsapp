@@ -4,7 +4,7 @@ import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
 import { BusinessMessageTemplatesResponse, MessageTemplatesComponentResponse } from '../response/business-message-templates.response';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
-import { LogService } from './log/log.service';
+import { LogService } from '@ZoppyTech/logger';
 
 export class WhatsappMessageTemplateService {
     public static async findByName(wabaId: string, token: string, templateName: string): Promise<BusinessMessageTemplatesResponse> {

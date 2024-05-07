@@ -29,10 +29,10 @@ import { Op } from 'sequelize';
 import { SyncGroupWhatsappRequest } from '../request/sync-group-whatsapp.request';
 import { BusinessMessageTemplatesResponse } from '../response/business-message-templates.response';
 import { TextMessageResponse } from '../response/text-message.response';
-import { LogService } from '../service/log/log.service';
 import { UpsertTemplateMessageParameters, WhatsappMessageTemplateService } from '../service/whatsapp-message-template.service';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
 import { TemplateFetchEntitiesHelper } from './template-fetch-entities.helper';
+import { LogService } from '@ZoppyTech/logger';
 
 export class WhatsappMessageTemplateHelper {
     public static async sync(wppAccount: WppAccount): Promise<BusinessMessageTemplatesResponse[]> {

@@ -1,10 +1,10 @@
 import { TextMessageResponse } from '../response/text-message.response';
 import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
-import { ApiErrorMessages, MessageTemplateConstants, WhatsappConstants } from '@ZoppyTech/utilities';
+import { ApiErrorMessages, WhatsappConstants } from '@ZoppyTech/utilities';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { WhatsappUtilities } from '../util/whatsapp-utilities';
-import { LogService } from './log/log.service';
+import { LogService } from '@ZoppyTech/logger';
 
 export class WhatsappMessageService {
     public static async sendTemplateMessage(

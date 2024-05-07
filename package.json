@@ -69,6 +69,7 @@
         "uuid": "*",
         "@ZoppyTech/utilities": "*",
         "@ZoppyTech/models": "*",
+        "@ZoppyTech/logger": "*",
         "@ZoppyTech/shared": "*"
     },
     "lint-staged": {

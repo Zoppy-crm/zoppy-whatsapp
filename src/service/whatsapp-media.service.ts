@@ -6,7 +6,7 @@ import { UnprocessableEntityException } from '@nestjs/common';
 import { ApiErrorMessages } from '@ZoppyTech/utilities';
 import { WhatsappMediaUploadResponse } from '../response/whatsapp-media-upload.response';
 import { WhatsappCreateSessionResponse } from '../response/whatsapp-create-session.response';
-import { LogService } from './log/log.service';
+import { LogService } from '@ZoppyTech/logger';
 
 export class WhatsappMediaService {
     public static async createSession(
