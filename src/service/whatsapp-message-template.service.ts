@@ -136,6 +136,7 @@ export class WhatsappMessageTemplateService {
         const bodyContent: string = WhatsappUtilities.formatTemplateBody(MessageTemplateUtil.replaceTemplateParameters(params.text));
 
         const body: BusinessMessageTemplatesResponse = {
+            allow_category_change: true,
             category: 'MARKETING',
             language: WhatsappConstants.LANGUAGE_CODES.PT_BR,
             name: params.name,
