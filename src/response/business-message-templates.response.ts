@@ -1,4 +1,5 @@
 export class BusinessMessageTemplatesResponse {
+    public allow_category_change?: boolean;
     public id?: string;
     public category: string;
     public name: string;

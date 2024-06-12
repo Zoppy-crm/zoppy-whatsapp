@@ -34,3 +34,4 @@ export * from './service/whatsapp-message.service';
 export * from './service/whatsapp.service';
 export * from './util/whatsapp-routes';
 export * from './util/whatsapp-utilities';
+export * from './mappers/status-message/status-message.mapper';
