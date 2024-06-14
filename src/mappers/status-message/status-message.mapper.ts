@@ -36,7 +36,7 @@ class StatusErrors {
             errorCode: 10,
             errorMessage: 'A permissão não foi concedida ou foi removida.',
             errorDetails:
-                'Use o depurador de token de acesso para verificar se seu aplicativo recebeu as permissões exigidas pelo endpoint. Consulte Solução de problemas. Certifique-se de que o número de telefone usado para definir a chave pública comercial esteja na lista de permissões.'
+                'Use o depurador de token de acesso e verifique se seu aplicativo recebeu as permissões exigidas pelo endpoint. Consulte Solução de problemas. Certifique-se de que o número de telefone usado para a chave pública comercial esteja na lista de permissões.'
         },
         {
             errorCode: 190,
