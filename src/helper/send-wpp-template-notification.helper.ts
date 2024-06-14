@@ -96,7 +96,8 @@ export class SendWppTemplateNotificationHelper {
             );
         }
 
-        if (whatsappContact.isBlocked) return;
+        if (whatsappContact.isBlocked)
+            throw new NotFoundException(ApiErrorMessages.WHATSAPP_CONTACT_FORBIDDEN_TO_SEND_MESSAGES_TO_THIS_CONTACT);
 
         await LogService.info({
             message: {
