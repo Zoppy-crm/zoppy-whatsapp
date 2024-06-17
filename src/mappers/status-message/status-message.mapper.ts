@@ -2,7 +2,7 @@ export class WhatsappStatusMessageMapper {
     public static async map(errorMessage: TranslatedStatusErrors): Promise<TranslatedStatusErrors> {
         const translatedErrors: StatusErrors = new StatusErrors();
         const statusErrors: Array<TranslatedStatusErrors> = translatedErrors.statusErrors;
-        if (!errorMessage.errorCode) return errorMessage;
+        if (errorMessage.errorCode !== null) return errorMessage;
 
         const code: number = errorMessage.errorCode >= 200 && errorMessage.errorCode <= 299 ? 200 : errorMessage.errorCode;
 
