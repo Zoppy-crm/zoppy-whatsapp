@@ -68,7 +68,7 @@
         "axios": "*",
         "uuid": "*",
         "@ZoppyTech/utilities": "*",
-        "@ZoppyTech/models": "*",
+        "@ZoppyTech/models": "9.11.2",
         "@ZoppyTech/logger": "*",
         "@ZoppyTech/shared": "*"
     },

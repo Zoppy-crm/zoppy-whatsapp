@@ -253,6 +253,7 @@ export class WhatsappMessageTemplateHelper {
                 lastName: params.contactFound.lastName,
                 billingId: address.id,
                 shippingId: address.id,
+                phone: WhatsappUtil.getPhoneWithoutCountryCode(params.contactFound.phone),
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 companyId: params.company.id
