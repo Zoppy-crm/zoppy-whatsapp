@@ -174,7 +174,7 @@ export class SendWppTemplateNotificationHelper {
                 headerParams: headerParamValues,
                 textParams: bodyParamValues,
                 headerType: wppMessageTemplate.type,
-                fileUrl: `${process.env.API_URL}/api/download/wpp-message-templates/${wppMessageTemplate.id}/header`,
+                fileUrl: `https://${process.env.API_DOMAIN}/api/download/wpp-message-templates/${wppMessageTemplate.id}/header`,
                 hasHeader: !!wppMessageTemplate.headerMessage
             }
         );
