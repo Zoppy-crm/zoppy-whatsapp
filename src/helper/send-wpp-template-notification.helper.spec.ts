@@ -15,7 +15,8 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestUtils } from '@ZoppyTech/test-utils';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
-import { AppConstants, MessageTemplateConstants, MessageTemplateUtil, StringUtil, WhatsappConstants } from '@ZoppyTech/utilities';
+import { AppConstants, StringUtil, WhatsappConstants } from '@ZoppyTech/utilities';
+import { MessageTemplateUtil, MessageTemplateConstants } from '@ZoppyTech/message-template';
 import { SendWppTemplateNotificationHelper } from './send-wpp-template-notification.helper';
 
 describe(`Whatsapp Notification Helper`, () => {

@@ -69,6 +69,7 @@
         "uuid": "*",
         "@ZoppyTech/utilities": "*",
         "@ZoppyTech/models": "*",
+        "@ZoppyTech/message-template": "*",
         "@ZoppyTech/logger": "*",
         "@ZoppyTech/shared": "*"
     },
