@@ -1,5 +1,6 @@
 import { UnprocessableEntityException } from '@nestjs/common';
-import { ApiErrorMessages, MessageTemplateUtil, WhatsappConstants } from '@ZoppyTech/utilities';
+import { ApiErrorMessages, WhatsappConstants } from '@ZoppyTech/utilities';
+import { MessageTemplateUtil } from '@ZoppyTech/message-template';
 import axios from 'axios';
 import { WhatsappRoutes } from '../util/whatsapp-routes';
 import { BusinessMessageTemplatesResponse, MessageTemplatesComponentResponse } from '../response/business-message-templates.response';

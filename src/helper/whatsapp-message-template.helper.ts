@@ -13,16 +13,8 @@ import {
     WppMessage,
     WppMessageTemplate
 } from '@ZoppyTech/models';
-import {
-    ApiErrorMessages,
-    MessageTemplateConstants,
-    MessageTemplateParameterEntities,
-    MessageTemplateUtil,
-    StringUtil,
-    WcStatusConstants,
-    WhatsappConstants,
-    WhatsappUtil
-} from '@ZoppyTech/utilities';
+import { ApiErrorMessages, StringUtil, WcStatusConstants, WhatsappConstants, WhatsappUtil } from '@ZoppyTech/utilities';
+import { MessageTemplateParameterEntities, MessageTemplateUtil, MessageTemplateConstants } from '@ZoppyTech/message-template';
 
 import { NotFoundException } from '@nestjs/common';
 import { Op } from 'sequelize';
