@@ -12,8 +12,7 @@ import {
     ScheduledWcCoupon,
     User
 } from '@ZoppyTech/models';
-import { AppConstants, Features, StringUtil, WcStatusConstants } from '@ZoppyTech/utilities';
-import { MessageTemplateParameterEntities } from '@ZoppyTech/message-template';
+import { AppConstants, Features, StringUtil, WcStatusConstants, MessageTemplateParameterEntities } from '@ZoppyTech/utilities';
 
 export class TemplateFetchEntitiesHelper {
     public static async execute(params: Parameters): Promise<MessageTemplateParameterEntities> {
