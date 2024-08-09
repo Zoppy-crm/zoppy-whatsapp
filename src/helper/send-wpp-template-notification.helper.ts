@@ -10,8 +10,15 @@ import {
     WppMessage,
     WppConversation
 } from '@ZoppyTech/models';
-import { ApiErrorMessages, PhoneNumberSliced, StringUtil, WhatsappConstants, WhatsappUtil } from '@ZoppyTech/utilities';
-import { MessageTemplateParameterEntities, MessageTemplateUtil } from '@ZoppyTech/message-template';
+import {
+    ApiErrorMessages,
+    PhoneNumberSliced,
+    StringUtil,
+    WhatsappConstants,
+    WhatsappUtil,
+    MessageTemplateParameterEntities,
+    MessageTemplateUtil
+} from '@ZoppyTech/utilities';
 import { NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { TextMessageResponse } from '../response/text-message.response';
 import { WhatsappMessageService } from '../service/whatsapp-message.service';
